@@ -1,6 +1,6 @@
 package view;
 
-import dao.LogDAO;
+import controleur.UtilisateurControleur;
 import javax.swing.*;
 import java.awt.*;
 
@@ -22,10 +22,7 @@ public class DialogueLogin extends JDialog {
     private JLabel        labelErreur;
     private boolean       connecte = false;
 
-    private static final String LOGIN_GESTIONNAIRE = "gestionnaire";
-    private static final String MDP_GESTIONNAIRE   = "gestionnaire";
-    private static final String LOGIN_ADMIN        = "admin";
-    private static final String MDP_ADMIN          = "admin";
+    private final UtilisateurControleur controleur = new UtilisateurControleur();
 
     public DialogueLogin(JFrame parent) {
         super(parent, "CinéTrack — Connexion", true);
@@ -138,16 +135,14 @@ public class DialogueLogin extends JDialog {
     private void tenterConnexion() {
         String login = champLogin.getText().trim();
         String mdp   = new String(champMotDePasse.getPassword());
-        if (LOGIN_ADMIN.equals(login) && MDP_ADMIN.equals(mdp)) {
-            LogDAO.setRoleActuel("admin");
-            new LogDAO().logConnexion(login);
-            connecte = true; dispose();
-        } else if (LOGIN_GESTIONNAIRE.equals(login) && MDP_GESTIONNAIRE.equals(mdp)) {
-            LogDAO.setRoleActuel("gestionnaire");
-            new LogDAO().logConnexion(login);
-            connecte = true; dispose();
+
+        // Le contrôleur vérifie en base, définit le rôle et écrit le log de connexion
+        String erreur = controleur.connecter(login, mdp);
+        if (erreur == null) {
+            connecte = true;
+            dispose();
         } else {
-            labelErreur.setText("Identifiant ou mot de passe incorrect.");
+            labelErreur.setText(erreur);
             champMotDePasse.setText("");
         }
     }
