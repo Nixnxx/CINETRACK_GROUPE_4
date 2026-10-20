@@ -98,6 +98,18 @@ public class LogDAO {
                 "Suppression séance id=" + idSeance + " par " + roleActuel);
     }
 
+    public void logAjoutUtilisateur(int idUtilisateur, String login) {
+        insererLog("utilisateur", "INSERT",
+                idUtilisateur,
+                "Création du compte gestionnaire \"" + login + "\" (id=" + idUtilisateur + ") par " + roleActuel);
+    }
+
+    public void logSuppressionUtilisateur(int idUtilisateur, String login) {
+        insererLog("utilisateur", "DELETE",
+                idUtilisateur,
+                "Suppression du compte gestionnaire \"" + login + "\" (id=" + idUtilisateur + ") par " + roleActuel);
+    }
+
     public void logRecherche(String tableCible, String critere) {
         insererLog(tableCible, "RECHERCHE",
                 null,

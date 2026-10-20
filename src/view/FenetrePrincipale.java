@@ -26,6 +26,7 @@ public class FenetrePrincipale extends JFrame {
     private FenetreFilms   fenetreFilms;
     private FenetreSeances fenetreSeances;
     private FenetreLogs    fenetreLogs;
+    private FenetreUtilisateurs fenetreUtilisateurs;
 
     // Boutons sidebar pour gérer l'état actif
     private JButton btnActif = null;
@@ -98,6 +99,15 @@ public class FenetrePrincipale extends JFrame {
                 desactiverBoutonsSidebar();
             });
             menuAdmin.add(itemLogs);
+
+            JMenuItem itemUtilisateurs = new JMenuItem("Gérer les gestionnaires");
+            styleMenuItem(itemUtilisateurs);
+            itemUtilisateurs.addActionListener(e -> {
+                fenetreUtilisateurs.rafraichir();
+                afficherVue("UTILISATEURS");
+                desactiverBoutonsSidebar();
+            });
+            menuAdmin.add(itemUtilisateurs);
             menuAdmin.getPopupMenu().setBackground(BG_MID);
             menuAdmin.getPopupMenu().setBorder(BorderFactory.createLineBorder(BORDER_COLOR));
 
@@ -328,6 +338,9 @@ public class FenetrePrincipale extends JFrame {
         if ("admin".equals(LogDAO.getRoleActuel())) {
             fenetreLogs = new FenetreLogs();
             panneauCentral.add(fenetreLogs, "LOGS");
+
+            fenetreUtilisateurs = new FenetreUtilisateurs();
+            panneauCentral.add(fenetreUtilisateurs, "UTILISATEURS");
         }
 
         zone.add(panneauCentral, BorderLayout.CENTER);
