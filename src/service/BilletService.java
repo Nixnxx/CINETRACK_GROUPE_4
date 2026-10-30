@@ -3,13 +3,21 @@ package service;
 import java.util.List;
 import dao.BilletDAO;
 import dao.PlaceDAO;
+import dao.SeanceDAO;
 import modele.Billet;
 import modele.Place;
+import modele.Seance;
 
 public class BilletService {
 
     private final BilletDAO billetDAO = new BilletDAO();
     private final PlaceDAO placeDAO = new PlaceDAO();
+    private final SeanceDAO seanceDAO = new SeanceDAO();
+
+    // Les séances à venir (pour la liste de la billetterie)
+    public List<Seance> seancesAVenir() {
+        return seanceDAO.findAVenir();
+    }
 
     // Toutes les places d'une salle (pour afficher la grille)
     public List<Place> placeSalle(int idSalle) {

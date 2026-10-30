@@ -29,11 +29,13 @@ public class PrincipaleView {
     private Pane ecranAccueil;
     private Pane ecranFilms;
     private Pane ecranSeances;
+    private Pane ecranBilletterie;    // MODIF 1
     private Pane ecranLogs;           // admin uniquement
     private Pane ecranUtilisateurs;   // admin uniquement
 
     private FilmsView vueFilms;
     private SeancesView vueSeances;
+    private BilletView vueBilletterie;           // MODIF 1
     private LogsView vueLogs;                    // admin uniquement
     private UtilisateursView vueUtilisateurs;    // admin uniquement
 
@@ -143,8 +145,10 @@ public class PrincipaleView {
 
         Button btnFilms = creerBoutonSidebar("🎬  Films", "FILMS");
         Button btnSeances = creerBoutonSidebar("🕐  Séances", "SEANCES");
+        Button btnBilletterie = creerBoutonSidebar("🎟  Billetterie", "BILLETTERIE");   // MODIF 2
         sidebar.getChildren().add(btnFilms);
         sidebar.getChildren().add(btnSeances);
+        sidebar.getChildren().add(btnBilletterie);                                       // MODIF 2
 
         // Sous-action Films
         Button sousGenre = creerSousBouton("Rechercher par genre");
@@ -234,7 +238,10 @@ public class PrincipaleView {
         vueSeances = new SeancesView(stage);
         ecranSeances = vueSeances.getRacine();
 
-        zoneCentrale.getChildren().addAll(ecranAccueil, ecranFilms, ecranSeances);
+        vueBilletterie = new BilletView(stage);                 // MODIF 3
+        ecranBilletterie = vueBilletterie.getRacine();          // MODIF 3
+
+        zoneCentrale.getChildren().addAll(ecranAccueil, ecranFilms, ecranSeances, ecranBilletterie);   // MODIF 3
 
         if (estAdmin()) {
             vueLogs = new LogsView(stage);
@@ -277,9 +284,13 @@ public class PrincipaleView {
         if (nomVue.equals("LOGS") && vueLogs != null) {
             vueLogs.rafraichir();     // pour voir les logs les plus récents
         }
+        if (nomVue.equals("BILLETTERIE") && vueBilletterie != null) {   // MODIF 4
+            vueBilletterie.rafraichir();   // séances à jour à chaque ouverture
+        }
         montrerEcran(ecranAccueil, nomVue.equals("ACCUEIL"));
         montrerEcran(ecranFilms, nomVue.equals("FILMS"));
         montrerEcran(ecranSeances, nomVue.equals("SEANCES"));
+        montrerEcran(ecranBilletterie, nomVue.equals("BILLETTERIE"));   // MODIF 5
         montrerEcran(ecranLogs, nomVue.equals("LOGS"));
         montrerEcran(ecranUtilisateurs, nomVue.equals("UTILISATEURS"));
     }

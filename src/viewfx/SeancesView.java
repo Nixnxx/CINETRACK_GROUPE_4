@@ -181,7 +181,7 @@ public class SeancesView implements SeanceVue {
                 Dialogues.erreur(fenetre, "Choisissez un film et une salle.");
                 return;
             }
-            controleur.ajouterSeance(d.getIdFilm(), d.getIdSalle(), d.getDate(), d.getHeure(), d.getPlaces());
+            controleur.ajouterSeance(d.getIdFilm(), d.getIdSalle(), d.getDate(), d.getHeure(), d.getPlaces(),d.getPrix());
         }
     }
 

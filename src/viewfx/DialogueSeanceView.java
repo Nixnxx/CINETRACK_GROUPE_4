@@ -31,6 +31,7 @@ public class DialogueSeanceView {
     private TextField champDate;
     private TextField champHeure;
     private TextField champPlaces;
+    private TextField champPrix;          // MODIF 1 : nouveau champ
     private boolean confirme = false;
 
     public DialogueSeanceView(Stage parent, SeanceControleur controleur) {
@@ -47,7 +48,7 @@ public class DialogueSeanceView {
         racine.setCenter(creerFormulaire());
         racine.setBottom(creerBarreBoutons());
 
-        Scene scene = new Scene(racine, 460, 340);
+        Scene scene = new Scene(racine, 460, 390);   // MODIF 2 : 340 -> 390 pour la ligne en plus
         Theme.appliquer(scene);
         fenetre.setScene(scene);
         fenetre.showAndWait();   // attend la fermeture (comme un JDialog modal)
@@ -80,6 +81,7 @@ public class DialogueSeanceView {
         champDate = new TextField(LocalDate.now().toString());
         champHeure = new TextField("20:00");
         champPlaces = new TextField("100");
+        champPrix = new TextField("250");              // MODIF 3 : valeur par défaut
 
         grille.add(creerLabel("Film :"), 0, 0);
         grille.add(comboFilm, 1, 0);
@@ -91,6 +93,8 @@ public class DialogueSeanceView {
         grille.add(champHeure, 1, 3);
         grille.add(creerLabel("Places disponibles :"), 0, 4);
         grille.add(champPlaces, 1, 4);
+        grille.add(creerLabel("Prix :"), 0, 5);         // MODIF 4 : ligne Prix
+        grille.add(champPrix, 1, 5);
 
         // La colonne des champs prend toute la largeur disponible
         ColumnConstraints colLabels = new ColumnConstraints();
@@ -149,4 +153,5 @@ public class DialogueSeanceView {
     public String getDate()   { return champDate.getText().trim(); }
     public String getHeure()  { return champHeure.getText().trim(); }
     public String getPlaces() { return champPlaces.getText().trim(); }
+    public String getPrix()   { return champPrix.getText().trim(); }   // MODIF 5 : le getter manquant
 }
