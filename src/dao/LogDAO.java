@@ -1,5 +1,9 @@
 package dao;
 
+import modele.LogEntree;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import connexion.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -115,4 +119,59 @@ public class LogDAO {
                 null,
                 "Recherche sur " + tableCible + " avec critère : \"" + critere + "\" par " + roleActuel);
     }
+
+    // Récupération des logs avec filtres
+    public List<LogEntree> findLogs(String filtreTable, String filtreAction) throws SQLException {
+        List<LogEntree> logs = new ArrayList<>();
+
+        StringBuilder sql = new StringBuilder(
+                "SELECT id_log, table_cible, action, id_cible, detail, effectue_par, date_formatee " +
+                        "FROM v_logs_recents WHERE 1=1"
+        );
+
+        if (filtreTable != null) {
+            sql.append(" AND LOWER(table_cible) LIKE LOWER(?)");
+        }
+
+        if (filtreAction != null) {
+            sql.append(" AND action = ?");
+        }
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+
+            int position = 1;
+
+            if (filtreTable != null) {
+                stmt.setString(position++, "%" + filtreTable + "%");
+            }
+
+            if (filtreAction != null) {
+                stmt.setString(position, filtreAction);
+            }
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Object idCible = rs.getObject("id_cible");
+
+                    String idCibleTexte = idCible != null
+                            ? idCible.toString()
+                            : "";
+
+                    logs.add(new LogEntree(
+                            rs.getInt("id_log"),
+                            rs.getString("table_cible"),
+                            rs.getString("action"),
+                            idCibleTexte,
+                            rs.getString("detail"),
+                            rs.getString("effectue_par"),
+                            rs.getString("date_formatee")
+                    ));
+                }
+            }
+        }
+
+        return logs;
+    }
+
 }

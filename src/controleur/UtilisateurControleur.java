@@ -3,7 +3,6 @@ package controleur;
 import dao.LogDAO;
 import dao.UtilisateurDAO;
 import modele.Utilisateur;
-import view.FenetreUtilisateurs;
 
 import java.sql.SQLException;
 
@@ -17,7 +16,7 @@ public class UtilisateurControleur {
     // Utilisateur actuellement connecté (session de l'application)
     private static Utilisateur utilisateurCourant;
 
-    private final FenetreUtilisateurs vue;
+    private final UtilisateurVue vue;
     private final UtilisateurDAO      dao    = new UtilisateurDAO();
     private final LogDAO              logDao = new LogDAO();
 
@@ -25,7 +24,7 @@ public class UtilisateurControleur {
         this(null);
     }
 
-    public UtilisateurControleur(FenetreUtilisateurs vue) {
+    public UtilisateurControleur(UtilisateurVue vue) {
         this.vue = vue;
     }
 

@@ -5,16 +5,15 @@ import dao.FilmDAO;
 import dao.LogDAO;
 import exceptions.FilmIntrouvableException;
 import exceptions.NoteInvalideException;
-import view.FenetreFilms;
 
 import java.util.List;
 
 public class FilmControleur {
-    private FenetreFilms vue;
+    private FilmVue vue;
     private FilmDAO dao;
     private LogDAO logDao;
 
-    public FilmControleur(FenetreFilms vue) {
+    public FilmControleur(FilmVue vue) {
         this.vue = vue;
         this.dao = new FilmDAO();
         this.logDao = new LogDAO();
