@@ -79,3 +79,39 @@
 .bouton-principal:hover {
     -fx-background-color: -couleur-accent-survol;
 }
+
+/* Séances : couleur de ligne selon les places restantes */
+.table-row-cell.ligne-places-zero    { -fx-background-color: #3c1414; }
+.table-row-cell.ligne-places-faibles { -fx-background-color: #37280a; }
+
+/* Logs : couleur de ligne selon l'action */
+.table-row-cell.ligne-insert    { -fx-background-color: #142d19; }
+.table-row-cell.ligne-update    { -fx-background-color: #122341; }
+.table-row-cell.ligne-delete    { -fx-background-color: #371212; }
+.table-row-cell.ligne-connexion { -fx-background-color: #2d260c; }
+
+/* La sélection doit toujours rester visible : cette règle doit rester APRÈS les couleurs ci-dessus */
+.table-row-cell:filled:selected { -fx-background-color: #28468c; }
+
+/* Logs : légende en bas de l'écran */
+.badge-log {
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 8 2 8;
+    -fx-border-width: 1;
+    -fx-border-radius: 3;
+}
+.badge-insert    { -fx-text-fill: #22783c; -fx-border-color: #22783c; }
+.badge-update    { -fx-text-fill: #3b82f6; -fx-border-color: #3b82f6; }
+.badge-delete    { -fx-text-fill: #b42828; -fx-border-color: #b42828; }
+.badge-connexion { -fx-text-fill: #b48c14; -fx-border-color: #b48c14; }
+
+/* Gestionnaires : ligne du formulaire de création + mention « Administration » */
+.formulaire-ligne {
+    -fx-background-color: #202534;
+    -fx-padding: 10 16 10 16;
+}
+.admin-info {
+    -fx-text-fill: #fab432;
+    -fx-font-size: 12px;
+}
