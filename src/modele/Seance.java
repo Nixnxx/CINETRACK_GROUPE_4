@@ -10,6 +10,7 @@ public class Seance {
     private LocalDate dateSeance;
     private LocalTime heure;
     private int placesDispo;
+    private double prix;
     
     // Champs pour affichage (jointure)
     private String titreFilm;
@@ -18,17 +19,18 @@ public class Seance {
     // Constructeurs
     public Seance() {}
 
-    public Seance(int idSeance, int idFilm, int idSalle, LocalDate dateSeance, LocalTime heure, int placesDispo) {
+    public Seance(int idSeance, int idFilm, int idSalle, LocalDate dateSeance, LocalTime heure, int placesDispo,double prix) {
         this.idSeance = idSeance;
         this.idFilm = idFilm;
         this.idSalle = idSalle;
         this.dateSeance = dateSeance;
         this.heure = heure;
         this.placesDispo = placesDispo;
+        this.prix = prix;
     }
 
-    public Seance(int idFilm, int idSalle, LocalDate dateSeance, LocalTime heure, int placesDispo) {
-        this(0, idFilm, idSalle, dateSeance, heure, placesDispo);
+    public Seance(int idFilm, int idSalle, LocalDate dateSeance, LocalTime heure, int placesDispo,double prix) {
+        this(0, idFilm, idSalle, dateSeance, heure, placesDispo,prix);
     }
 
     // Getters / Setters
@@ -49,9 +51,15 @@ public class Seance {
     public void setTitreFilm(String titreFilm) { this.titreFilm = titreFilm; }
     public String getNomSalle() { return nomSalle; }
     public void setNomSalle(String nomSalle) { this.nomSalle = nomSalle; }
+    public double getPrix() { return prix; }
+    public void setPrix(double prix) { this.prix = prix; }
 
     @Override
     public String toString() {
         return "Seance #" + idSeance + " - " + dateSeance + " " + heure;
+    }
+
+    public String getLibelle() {
+        return heure + " - " + titreFilm + " - " + nomSalle + " - " + prix;
     }
 }

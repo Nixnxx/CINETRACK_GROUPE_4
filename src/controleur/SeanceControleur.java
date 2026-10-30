@@ -46,37 +46,53 @@ public class SeanceControleur {
         }
     }
 
-    public void ajouterSeance(int idFilm, int idSalle, String dateStr, String heureStr, String placesStr) {
+    // MODIF : nouveau paramètre prixStr, et on vérifie le résultat de l'insertion
+    public void ajouterSeance(int idFilm, int idSalle, String dateStr, String heureStr,
+                              String placesStr, String prixStr) {
         try {
             LocalDate date = LocalDate.parse(dateStr);
             LocalTime heure = LocalTime.parse(heureStr);
             int places = Integer.parseInt(placesStr);
+            double prix = Double.parseDouble(prixStr);
 
-            Seance seance = new Seance(idFilm, idSalle, date, heure, places);
-            dao.insert(seance);
+            if (prix <= 0) {
+                vue.afficherErreur("Le prix doit être positif.");
+                return;
+            }
 
-            // Log Java
-            logDao.logAjoutSeance(seance.getIdSeance(), idFilm, dateStr);
+            Seance seance = new Seance(idFilm, idSalle, date, heure, places, prix);
 
-            vue.afficherSucces("Séance ajoutée avec succès !");
-            chargerToutesSeances();
+            if (dao.insert(seance)) {
+                // Log Java
+                logDao.logAjoutSeance(seance.getIdSeance(), idFilm, dateStr);
+
+                vue.afficherSucces("Séance ajoutée avec succès !");
+                chargerToutesSeances();
+            } else {
+                vue.afficherErreur("Erreur lors de l'ajout de la séance.");
+            }
         } catch (SalleIndisponibleException e) {
             vue.afficherErreur(e.getMessage());
         } catch (Exception e) {
-            vue.afficherErreur("Format de date/heure invalide (utilisez YYYY-MM-DD et HH:MM:SS)");
+            vue.afficherErreur("Données invalides (date YYYY-MM-DD, heure HH:MM:SS, places et prix numériques)");
         }
     }
 
+    // MODIF : gestion du refus quand la séance a déjà des billets
     public void supprimerSeance(int idSeance) {
-        boolean success = dao.delete(idSeance);
-        if (success) {
-            // Log Java
-            logDao.logSuppressionSeance(idSeance);
+        try {
+            boolean success = dao.delete(idSeance);
+            if (success) {
+                // Log Java
+                logDao.logSuppressionSeance(idSeance);
 
-            vue.afficherSucces("Séance supprimée !");
-            chargerToutesSeances();
-        } else {
-            vue.afficherErreur("Erreur lors de la suppression");
+                vue.afficherSucces("Séance supprimée !");
+                chargerToutesSeances();
+            } else {
+                vue.afficherErreur("Erreur lors de la suppression");
+            }
+        } catch (IllegalStateException e) {
+            vue.afficherErreur(e.getMessage());
         }
     }
 
