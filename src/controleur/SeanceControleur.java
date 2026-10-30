@@ -8,20 +8,19 @@ import dao.FilmDAO;
 import dao.SalleDAO;
 import dao.LogDAO;
 import exceptions.SalleIndisponibleException;
-import view.FenetreSeances;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
 public class SeanceControleur {
-    private FenetreSeances vue;
+    private SeanceVue vue;
     private SeanceDAO dao;
     private FilmDAO filmDao;
     private SalleDAO salleDao;
     private LogDAO logDao;
 
-    public SeanceControleur(FenetreSeances vue) {
+    public SeanceControleur(SeanceVue vue) {
         this.vue = vue;
         this.dao = new SeanceDAO();
         this.filmDao = new FilmDAO();
