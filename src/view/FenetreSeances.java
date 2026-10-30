@@ -175,7 +175,7 @@ public class FenetreSeances extends JPanel {
     private void actionAjouter() {
         DialogueSeance d = new DialogueSeance((JFrame) SwingUtilities.getWindowAncestor(this), controleur);
         if (d.estConfirme())
-            controleur.ajouterSeance(d.getIdFilm(), d.getIdSalle(), d.getDate(), d.getHeure(), d.getPlaces());
+            controleur.ajouterSeance(d.getIdFilm(), d.getIdSalle(), d.getDate(), d.getHeure(), d.getPlaces(),d.getPrix());
     }
 
     private void actionSupprimer() {

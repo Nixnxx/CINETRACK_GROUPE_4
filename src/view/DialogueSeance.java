@@ -27,6 +27,7 @@ public class DialogueSeance extends JDialog {
     private JTextField         champDate;
     private JTextField         champHeure;
     private JTextField         champPlaces;
+    private JTextField         champPrix;      // MODIF 1 : nouveau champ
     private boolean            confirme = false;
     private SeanceControleur   controleur;
 
@@ -35,7 +36,7 @@ public class DialogueSeance extends JDialog {
         this.controleur = controleur;
         initialiserComposants();
         chargerListesCombo();
-        setSize(460, 370);
+        setSize(460, 420);                     // MODIF 2 : un peu plus haut pour la ligne en plus
         setLocationRelativeTo(parent);
         setResizable(false);
         getContentPane().setBackground(BG_DARK);
@@ -46,8 +47,8 @@ public class DialogueSeance extends JDialog {
         JPanel panneau = new JPanel(new GridBagLayout());
         panneau.setBackground(BG_PANEL);
         panneau.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createMatteBorder(0, 0, 1, 0, BORDER_COLOR),
-            BorderFactory.createEmptyBorder(18, 22, 12, 22)
+                BorderFactory.createMatteBorder(0, 0, 1, 0, BORDER_COLOR),
+                BorderFactory.createEmptyBorder(18, 22, 12, 22)
         ));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(7, 5, 7, 5);
@@ -89,6 +90,13 @@ public class DialogueSeance extends JDialog {
         gbc.gridx = 1; gbc.weightx = 1.0;
         champPlaces = creerChamp("100");
         panneau.add(champPlaces, gbc);
+
+        // MODIF 3 : ligne Prix
+        gbc.gridx = 0; gbc.gridy = 5; gbc.weightx = 0;
+        panneau.add(creerLabel("Prix"), gbc);
+        gbc.gridx = 1; gbc.weightx = 1.0;
+        champPrix = creerChamp("250");
+        panneau.add(champPrix, gbc);
 
         // Boutons
         JPanel panneauBoutons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 10));
@@ -133,8 +141,8 @@ public class DialogueSeance extends JDialog {
         f.setForeground(TEXT_PRIMARY);
         f.setCaretColor(TEXT_PRIMARY);
         f.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(BORDER_COLOR),
-            BorderFactory.createEmptyBorder(4, 8, 4, 8)
+                BorderFactory.createLineBorder(BORDER_COLOR),
+                BorderFactory.createEmptyBorder(4, 8, 4, 8)
         ));
         f.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         return f;
@@ -171,4 +179,5 @@ public class DialogueSeance extends JDialog {
     public String getDate()   { return champDate.getText().trim(); }
     public String getHeure()  { return champHeure.getText().trim(); }
     public String getPlaces() { return champPlaces.getText().trim(); }
+    public String getPrix()   { return champPrix.getText().trim(); }   // MODIF 4 : le getter manquant
 }
