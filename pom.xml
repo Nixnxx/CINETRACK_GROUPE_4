@@ -46,6 +46,7 @@
                     <mainClass>cinetrack/main.MainFx</mainClass>
                     <options>
                         <option>--enable-native-access=javafx.graphics</option>
+                        <option>-Dprism.order=sw</option>
                     </options>
                 </configuration>
             </plugin>
