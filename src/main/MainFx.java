@@ -1,41 +1,56 @@
 package main;
 
+import dao.LogDAO;
 import javafx.application.Application;
-import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import viewfx.LoginView;
 
 public class MainFx extends Application {
 
+    private Stage stage;
+
     @Override
     public void start(Stage stage) {
-        Label titre = new Label("CinéTrack");
+        this.stage = stage;
+        afficherLogin();
+        stage.show();
+    }
+
+    private void afficherLogin() {
+        LoginView login = new LoginView(this::afficherAccueilProvisoire);
+        stage.setTitle("CinéTrack — Connexion");
+        stage.setResizable(false);
+        stage.setScene(creerScene(login.getRacine(), 400, 340));
+        stage.centerOnScreen();
+    }
+
+    private void afficherAccueilProvisoire() {
+        String role = LogDAO.getRoleActuel();
+
+        Label titre = new Label("Bienvenue dans CinéTrack");
         titre.getStyleClass().add("titre");
+        Label sousTitre = new Label("Connecté en tant que : " + role);
+        sousTitre.getStyleClass().add("sous-titre");
 
-        TextField identifiant = new TextField();
-        identifiant.setPromptText("Identifiant");
+        VBox contenu = new VBox(10, titre, sousTitre);
+        contenu.setAlignment(Pos.CENTER);
 
-        PasswordField motDePasse = new PasswordField();
-        motDePasse.setPromptText("Mot de passe");
+        stage.setTitle("CinéTrack — " + role.toUpperCase());
+        stage.setResizable(true);
+        stage.setScene(creerScene(contenu, 1150, 730));
+        stage.centerOnScreen();
+    }
 
-        Button connexion = new Button("Connexion");
-        connexion.getStyleClass().add("bouton-principal");
-
-        VBox racine = new VBox(12, titre, identifiant, motDePasse, connexion);
-        racine.setPadding(new Insets(24));
-
-        Scene scene = new Scene(racine, 360, 300);
+    private Scene creerScene(Parent racine, double largeur, double hauteur) {
+        Scene scene = new Scene(racine, largeur, hauteur);
         scene.getStylesheets().add(
                 getClass().getResource("/css/theme.css").toExternalForm());
-
-        stage.setTitle("CinéTrack");
-        stage.setScene(scene);
-        stage.show();
+        return scene;
     }
 
     public static void main(String[] args) {

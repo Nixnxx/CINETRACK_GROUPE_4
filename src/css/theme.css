@@ -1,14 +1,17 @@
 .root {
-    -couleur-fond: #0f172a;
-    -couleur-panneau: #1e293b;
-    -couleur-bordure: #334155;
+    -couleur-fond: #12141c;
+    -couleur-panneau: #1c202c;
+    -couleur-champ: #262b3a;
+    -couleur-bordure: #373e50;
     -couleur-accent: #3b82f6;
-    -couleur-texte: #e2e8f0;
-    -couleur-texte-doux: #94a3b8;
+    -couleur-accent-survol: #2563eb;
+    -couleur-texte: #dce1f0;
+    -couleur-texte-doux: #78829b;
+    -couleur-erreur: #ef4444;
 
     -fx-background-color: -couleur-fond;
     -fx-font-family: "Segoe UI";
-    -fx-font-size: 14px;
+    -fx-font-size: 12px;
 }
 
 .label {
@@ -16,18 +19,37 @@
 }
 
 .titre {
-    -fx-font-size: 24px;
+    -fx-font-size: 22px;
     -fx-font-weight: bold;
 }
 
-.text-field, .password-field {
+.sous-titre, .libelle {
+    -fx-text-fill: -couleur-texte-doux;
+    -fx-font-size: 12px;
+}
+
+.erreur {
+    -fx-text-fill: -couleur-erreur;
+    -fx-font-size: 11px;
+    -fx-font-style: italic;
+}
+
+.carte {
     -fx-background-color: -couleur-panneau;
+    -fx-border-color: -couleur-bordure;
+    -fx-border-width: 1;
+    -fx-padding: 28 32 20 32;
+}
+
+.text-field, .password-field {
+    -fx-background-color: -couleur-champ;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
     -fx-text-fill: -couleur-texte;
     -fx-prompt-text-fill: -couleur-texte-doux;
+    -fx-highlight-fill: -couleur-accent;
     -fx-border-color: -couleur-bordure;
-    -fx-border-radius: 6;
-    -fx-background-radius: 6;
-    -fx-padding: 8 10;
+    -fx-padding: 6 8;
 }
 
 .text-field:focused, .password-field:focused {
@@ -35,9 +57,10 @@
 }
 
 .button {
-    -fx-background-color: -couleur-panneau;
+    -fx-background-color: -couleur-champ;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
     -fx-text-fill: -couleur-texte;
-    -fx-background-radius: 6;
     -fx-padding: 8 16;
     -fx-cursor: hand;
 }
@@ -49,8 +72,10 @@
 .bouton-principal {
     -fx-background-color: -couleur-accent;
     -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
 }
 
 .bouton-principal:hover {
-    -fx-background-color: #2563eb;
+    -fx-background-color: -couleur-accent-survol;
 }
