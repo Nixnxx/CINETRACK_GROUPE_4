@@ -1,0 +1,81 @@
+.root {
+    -couleur-fond: #12141c;
+    -couleur-panneau: #1c202c;
+    -couleur-champ: #262b3a;
+    -couleur-bordure: #373e50;
+    -couleur-accent: #3b82f6;
+    -couleur-accent-survol: #2563eb;
+    -couleur-texte: #dce1f0;
+    -couleur-texte-doux: #78829b;
+    -couleur-erreur: #ef4444;
+
+    -fx-background-color: -couleur-fond;
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 12px;
+}
+
+.label {
+    -fx-text-fill: -couleur-texte;
+}
+
+.titre {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.sous-titre, .libelle {
+    -fx-text-fill: -couleur-texte-doux;
+    -fx-font-size: 12px;
+}
+
+.erreur {
+    -fx-text-fill: -couleur-erreur;
+    -fx-font-size: 11px;
+    -fx-font-style: italic;
+}
+
+.carte {
+    -fx-background-color: -couleur-panneau;
+    -fx-border-color: -couleur-bordure;
+    -fx-border-width: 1;
+    -fx-padding: 28 32 20 32;
+}
+
+.text-field, .password-field {
+    -fx-background-color: -couleur-champ;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-text-fill: -couleur-texte;
+    -fx-prompt-text-fill: -couleur-texte-doux;
+    -fx-highlight-fill: -couleur-accent;
+    -fx-border-color: -couleur-bordure;
+    -fx-padding: 6 8;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: -couleur-accent;
+}
+
+.button {
+    -fx-background-color: -couleur-champ;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-text-fill: -couleur-texte;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: -couleur-bordure;
+}
+
+.bouton-principal {
+    -fx-background-color: -couleur-accent;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.bouton-principal:hover {
+    -fx-background-color: -couleur-accent-survol;
+}
