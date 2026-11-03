@@ -29,13 +29,13 @@ public class PrincipaleView {
     private Pane ecranAccueil;
     private Pane ecranFilms;
     private Pane ecranSeances;
-    private Pane ecranBilletterie;    // MODIF 1
+    private Pane ecranBilletterie;
     private Pane ecranLogs;           // admin uniquement
     private Pane ecranUtilisateurs;   // admin uniquement
 
     private FilmsView vueFilms;
     private SeancesView vueSeances;
-    private BilletView vueBilletterie;           // MODIF 1
+    private BilletView vueBilletterie;
     private LogsView vueLogs;                    // admin uniquement
     private UtilisateursView vueUtilisateurs;    // admin uniquement
 
@@ -64,7 +64,7 @@ public class PrincipaleView {
     }
 
     // =========================================================
-    //  BARRE DU HAUT : nom de l'application, menus, badge du rôle
+    //  BARRE DU HAUT : nom de l'application, menu À propos, badge du rôle
     // =========================================================
     private HBox creerBarreHaute() {
         // Partie gauche
@@ -77,28 +77,8 @@ public class PrincipaleView {
         gauche.setAlignment(Pos.CENTER_LEFT);
         gauche.getChildren().addAll(point, nom, trait, sousNom);
 
-        // Partie droite : menus
+        // Partie droite : menu (le menu Administration est maintenant dans la sidebar)
         MenuBar menus = new MenuBar();
-
-        if (estAdmin()) {
-            Menu menuAdmin = new Menu("⚙  Administration");
-            menuAdmin.getStyleClass().add("menu-admin");
-
-            MenuItem itemLogs = new MenuItem("Consulter les logs");
-            itemLogs.setOnAction(e -> {
-                afficherVue("LOGS");
-                desactiverBoutonsSidebar();
-            });
-
-            MenuItem itemUtilisateurs = new MenuItem("Gérer les gestionnaires");
-            itemUtilisateurs.setOnAction(e -> {
-                afficherVue("UTILISATEURS");
-                desactiverBoutonsSidebar();
-            });
-
-            menuAdmin.getItems().addAll(itemLogs, itemUtilisateurs);
-            menus.getMenus().add(menuAdmin);
-        }
 
         Menu menuAPropos = new Menu("À propos");
         MenuItem itemAPropos = new MenuItem("À propos de CinéTrack");
@@ -145,10 +125,10 @@ public class PrincipaleView {
 
         Button btnFilms = creerBoutonSidebar("🎬  Films", "FILMS");
         Button btnSeances = creerBoutonSidebar("🕐  Séances", "SEANCES");
-        Button btnBilletterie = creerBoutonSidebar("🎟  Billetterie", "BILLETTERIE");   // MODIF 2
+        Button btnBilletterie = creerBoutonSidebar("🎟  Billetterie", "BILLETTERIE");
         sidebar.getChildren().add(btnFilms);
         sidebar.getChildren().add(btnSeances);
-        sidebar.getChildren().add(btnBilletterie);                                       // MODIF 2
+        sidebar.getChildren().add(btnBilletterie);
 
         // Sous-action Films
         Button sousGenre = creerSousBouton("Rechercher par genre");
@@ -160,13 +140,7 @@ public class PrincipaleView {
         sidebar.getChildren().add(sousGenre);
 
         // Séparateur
-        Region separateur = new Region();
-        separateur.getStyleClass().add("separateur");
-        separateur.setMinHeight(1);
-        separateur.setPrefHeight(1);
-        separateur.setMaxHeight(1);
-        VBox.setMargin(separateur, new Insets(10, 0, 10, 0));
-        sidebar.getChildren().add(separateur);
+        sidebar.getChildren().add(creerSeparateur());
 
         // Section accès rapide
         sidebar.getChildren().add(creerLabel("ACCÈS RAPIDE", "section-label"));
@@ -178,6 +152,14 @@ public class PrincipaleView {
             vueSeances.chargerPlanningAujourdhui();
         });
         sidebar.getChildren().add(sousPlanning);
+
+        // Section administration (admin uniquement)
+        if (estAdmin()) {
+            sidebar.getChildren().add(creerSeparateur());
+            sidebar.getChildren().add(creerLabel("ADMINISTRATION", "section-label"));
+            sidebar.getChildren().add(creerBoutonSidebar("📋  Logs", "LOGS"));
+            sidebar.getChildren().add(creerBoutonSidebar("👥  Gestionnaires", "UTILISATEURS"));
+        }
 
         // Pousse la version tout en bas
         Region poussoir = new Region();
@@ -191,6 +173,17 @@ public class PrincipaleView {
         sidebar.getChildren().add(version);
 
         return sidebar;
+    }
+
+    // Trait fin entre deux sections de la sidebar
+    private Region creerSeparateur() {
+        Region separateur = new Region();
+        separateur.getStyleClass().add("separateur");
+        separateur.setMinHeight(1);
+        separateur.setPrefHeight(1);
+        separateur.setMaxHeight(1);
+        VBox.setMargin(separateur, new Insets(10, 0, 10, 0));
+        return separateur;
     }
 
     private Button creerBoutonSidebar(String texte, String vue) {
@@ -238,10 +231,10 @@ public class PrincipaleView {
         vueSeances = new SeancesView(stage);
         ecranSeances = vueSeances.getRacine();
 
-        vueBilletterie = new BilletView(stage);                 // MODIF 3
-        ecranBilletterie = vueBilletterie.getRacine();          // MODIF 3
+        vueBilletterie = new BilletView(stage);
+        ecranBilletterie = vueBilletterie.getRacine();
 
-        zoneCentrale.getChildren().addAll(ecranAccueil, ecranFilms, ecranSeances, ecranBilletterie);   // MODIF 3
+        zoneCentrale.getChildren().addAll(ecranAccueil, ecranFilms, ecranSeances, ecranBilletterie);
 
         if (estAdmin()) {
             vueLogs = new LogsView(stage);
@@ -284,13 +277,13 @@ public class PrincipaleView {
         if (nomVue.equals("LOGS") && vueLogs != null) {
             vueLogs.rafraichir();     // pour voir les logs les plus récents
         }
-        if (nomVue.equals("BILLETTERIE") && vueBilletterie != null) {   // MODIF 4
+        if (nomVue.equals("BILLETTERIE") && vueBilletterie != null) {
             vueBilletterie.rafraichir();   // séances à jour à chaque ouverture
         }
         montrerEcran(ecranAccueil, nomVue.equals("ACCUEIL"));
         montrerEcran(ecranFilms, nomVue.equals("FILMS"));
         montrerEcran(ecranSeances, nomVue.equals("SEANCES"));
-        montrerEcran(ecranBilletterie, nomVue.equals("BILLETTERIE"));   // MODIF 5
+        montrerEcran(ecranBilletterie, nomVue.equals("BILLETTERIE"));
         montrerEcran(ecranLogs, nomVue.equals("LOGS"));
         montrerEcran(ecranUtilisateurs, nomVue.equals("UTILISATEURS"));
     }
