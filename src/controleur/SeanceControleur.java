@@ -1,12 +1,9 @@
 package controleur;
 
+import dao.*;
 import modele.Seance;
 import modele.Film;
 import modele.Salle;
-import dao.SeanceDAO;
-import dao.FilmDAO;
-import dao.SalleDAO;
-import dao.LogDAO;
 import exceptions.SalleIndisponibleException;
 
 import java.time.LocalDate;
@@ -22,10 +19,10 @@ public class SeanceControleur {
 
     public SeanceControleur(SeanceVue vue) {
         this.vue = vue;
-        this.dao = new SeanceDAO();
-        this.filmDao = new FilmDAO();
-        this.salleDao = new SalleDAO();
-        this.logDao = new LogDAO();
+        this.dao = new SeanceDAOImpl();
+        this.filmDao = new FilmDAOImpl();
+        this.salleDao = new SalleDAOImpl();
+        this.logDao = new LogDAOImpl();
     }
 
     public void chargerToutesSeances() {

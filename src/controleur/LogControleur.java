@@ -1,6 +1,7 @@
 package controleur;
 
 import dao.LogDAO;
+import dao.LogDAOImpl;
 import modele.LogEntree;
 
 import java.sql.SQLException;
@@ -12,7 +13,7 @@ public class LogControleur {
 
     public LogControleur(LogVue vue) {
         this.vue = vue;
-        this.dao = new LogDAO();
+        this.dao = new LogDAOImpl();
     }
 
     // Les deux filtres peuvent être vides : on affiche alors tous les logs

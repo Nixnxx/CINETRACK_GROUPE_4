@@ -1,7 +1,9 @@
 package controleur;
 
 import dao.LogDAO;
+import dao.LogDAOImpl;
 import dao.UtilisateurDAO;
+import dao.UtilisateurDAOImpl;
 import modele.Utilisateur;
 
 import java.sql.SQLException;
@@ -17,8 +19,8 @@ public class UtilisateurControleur {
     private static Utilisateur utilisateurCourant;
 
     private final UtilisateurVue vue;
-    private final UtilisateurDAO      dao    = new UtilisateurDAO();
-    private final LogDAO              logDao = new LogDAO();
+    private final UtilisateurDAO      dao    = new UtilisateurDAOImpl();
+    private final LogDAO              logDao = new LogDAOImpl();
 
     public UtilisateurControleur() {
         this(null);

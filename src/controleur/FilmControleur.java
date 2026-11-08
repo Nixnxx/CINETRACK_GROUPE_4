@@ -1,5 +1,7 @@
 package controleur;
 
+import dao.FilmDAOImpl;
+import dao.LogDAOImpl;
 import modele.Film;
 import dao.FilmDAO;
 import dao.LogDAO;
@@ -15,8 +17,8 @@ public class FilmControleur {
 
     public FilmControleur(FilmVue vue) {
         this.vue = vue;
-        this.dao = new FilmDAO();
-        this.logDao = new LogDAO();
+        this.dao = new FilmDAOImpl();
+        this.logDao = new LogDAOImpl();
     }
 
     public void chargerFilms() {

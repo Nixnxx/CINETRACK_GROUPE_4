@@ -1,18 +1,17 @@
 package service;
 
 import java.util.List;
-import dao.BilletDAO;
-import dao.PlaceDAO;
-import dao.SeanceDAO;
+
+import dao.*;
 import modele.Billet;
 import modele.Place;
 import modele.Seance;
 
 public class BilletService {
 
-    private final BilletDAO billetDAO = new BilletDAO();
-    private final PlaceDAO placeDAO = new PlaceDAO();
-    private final SeanceDAO seanceDAO = new SeanceDAO();
+    private final BilletDAO billetDAO = new BilletDAOImpl();
+    private final PlaceDAO placeDAO = new PlaceDAOImpl();
+    private final SeanceDAO seanceDAO = new SeanceDAOImpl();
 
     // Les séances à venir (pour la liste de la billetterie)
     public List<Seance> seancesAVenir() {
