@@ -1,48 +1,36 @@
 package controleur;
 
-import dao.*;
-import modele.Seance;
+import exceptions.SalleIndisponibleException;
 import modele.Film;
 import modele.Salle;
-import exceptions.SalleIndisponibleException;
+import service.SeanceService;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 public class SeanceControleur {
-    private SeanceVue vue;
-    private SeanceDAO dao;
-    private FilmDAO filmDao;
-    private SalleDAO salleDao;
-    private LogDAO logDao;
+    private final SeanceVue vue;
+    private final SeanceService service;
 
     public SeanceControleur(SeanceVue vue) {
         this.vue = vue;
-        this.dao = new SeanceDAOImpl();
-        this.filmDao = new FilmDAOImpl();
-        this.salleDao = new SalleDAOImpl();
-        this.logDao = new LogDAOImpl();
+        this.service = new SeanceService();
     }
 
     public void chargerToutesSeances() {
-        List<Seance> seances = dao.findAll();
-        vue.afficherSeances(seances);
+        vue.afficherSeances(service.getToutesSeances());
     }
 
     public void chargerSeancesParDate(String date) {
-        if (date == null || date.trim().isEmpty()) {
-            chargerToutesSeances();
-        } else {
-            // Log de la recherche par date
-            logDao.logRecherche("seance", "date=" + date);
-
-            List<Seance> seances = dao.findByDate(date);
-            vue.afficherSeances(seances);
+        try {
+            vue.afficherSeances(service.getSeancesParDate(date));
+        } catch (IllegalArgumentException e) {
+            vue.afficherErreur(e.getMessage());
         }
     }
 
-    // MODIF : nouveau paramètre prixStr, et on vérifie le résultat de l'insertion
     public void ajouterSeance(int idFilm, int idSalle, String dateStr, String heureStr,
                               String placesStr, String prixStr) {
         try {
@@ -51,37 +39,22 @@ public class SeanceControleur {
             int places = Integer.parseInt(placesStr);
             double prix = Double.parseDouble(prixStr);
 
-            if (prix <= 0) {
-                vue.afficherErreur("Le prix doit être positif.");
-                return;
-            }
-
-            Seance seance = new Seance(idFilm, idSalle, date, heure, places, prix);
-
-            if (dao.insert(seance)) {
-                // Log Java
-                logDao.logAjoutSeance(seance.getIdSeance(), idFilm, dateStr);
-
+            if (service.ajouterSeance(idFilm, idSalle, date, heure, places, prix)) {
                 vue.afficherSucces("Séance ajoutée avec succès !");
                 chargerToutesSeances();
             } else {
                 vue.afficherErreur("Erreur lors de l'ajout de la séance.");
             }
-        } catch (SalleIndisponibleException e) {
-            vue.afficherErreur(e.getMessage());
-        } catch (Exception e) {
+        } catch (NumberFormatException | DateTimeParseException e) {
             vue.afficherErreur("Données invalides (date YYYY-MM-DD, heure HH:MM:SS, places et prix numériques)");
+        } catch (SalleIndisponibleException | IllegalArgumentException e) {
+            vue.afficherErreur(e.getMessage());
         }
     }
 
-    // MODIF : gestion du refus quand la séance a déjà des billets
     public void supprimerSeance(int idSeance) {
         try {
-            boolean success = dao.delete(idSeance);
-            if (success) {
-                // Log Java
-                logDao.logSuppressionSeance(idSeance);
-
+            if (service.supprimerSeance(idSeance)) {
                 vue.afficherSucces("Séance supprimée !");
                 chargerToutesSeances();
             } else {
@@ -93,15 +66,15 @@ public class SeanceControleur {
     }
 
     public List<Film> getTousFilms() {
-        return filmDao.findAll();
+        return service.getTousFilms();
     }
 
     public List<Salle> getToutesSalles() {
-        return salleDao.findAll();
+        return service.getToutesSalles();
     }
 
     public String[] getFilmsPourCombo() {
-        List<Film> films = filmDao.findAll();
+        List<Film> films = service.getTousFilms();
         String[] result = new String[films.size()];
         for (int i = 0; i < films.size(); i++) {
             result[i] = films.get(i).getIdFilm() + ":" + films.get(i).getTitre();
@@ -110,7 +83,7 @@ public class SeanceControleur {
     }
 
     public String[] getSallesPourCombo() {
-        List<Salle> salles = salleDao.findAll();
+        List<Salle> salles = service.getToutesSalles();
         String[] result = new String[salles.size()];
         for (int i = 0; i < salles.size(); i++) {
             result[i] = salles.get(i).getIdSalle() + ":" + salles.get(i).getNom();

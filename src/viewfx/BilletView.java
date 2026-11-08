@@ -1,5 +1,7 @@
 package viewfx;
 
+import controleur.BilletControleur;
+import controleur.BilletVue;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,19 +22,18 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import modele.Place;
 import modele.Seance;
-import service.BilletService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BilletView {
+public class BilletView implements BilletVue {
 
     private static final String STYLE_LIBRE   = "-fx-background-color: #2a3350; -fx-text-fill: #dce1f0;";
     private static final String STYLE_CHOISIE = "-fx-background-color: #3b82f6; -fx-text-fill: white;";
     private static final String STYLE_VENDUE  = "-fx-background-color: #6b2020; -fx-text-fill: #dce1f0;";
 
     private final Stage fenetre;
-    private final BilletService service = new BilletService();
+    private final BilletControleur controleur;
     private final BorderPane racine = new BorderPane();
 
     private TableView<Seance> tableSeances;
@@ -49,6 +50,7 @@ public class BilletView {
 
     public BilletView(Stage fenetre) {
         this.fenetre = fenetre;
+        this.controleur = new BilletControleur(this);
 
         racine.setTop(creerBandeau());
         racine.setLeft(creerTable());
@@ -156,32 +158,15 @@ public class BilletView {
     }
 
     // =========================================================
-    //  Logique de l'écran
+    //  Méthodes appelées par le contrôleur (interface BilletVue)
     // =========================================================
-    private void chargerSeances() {
-        donnees.setAll(service.seancesAVenir());
+    @Override
+    public void afficherSeances(List<Seance> seances) {
+        donnees.setAll(seances);
     }
 
-    private void choisirSeance(Seance seance) {
-        seanceChoisie = seance;
-        placesChoisies.clear();
-        grillePlaces.getChildren().clear();
-
-        if (seance == null) {
-            labelSeance.setText("Choisissez une séance dans la liste");
-            majRecap();
-            return;
-        }
-
-        labelSeance.setText(seance.getTitreFilm() + " — " + seance.getNomSalle()
-                + " — " + seance.getDateSeance() + " " + seance.getHeure());
-        afficherPlaces();
-    }
-
-    private void afficherPlaces() {
-        List<Place> places = service.placeSalle(seanceChoisie.getIdSalle());            // MODIF
-        List<Integer> vendues = service.placeVendues(seanceChoisie.getIdSeance());      // MODIF
-
+    @Override
+    public void afficherPlaces(List<Place> places, List<Integer> vendues) {
         for (Place p : places) {
             ToggleButton bouton = new ToggleButton(p.getRangee() + p.getNumero());
             bouton.setPrefSize(52, 30);
@@ -209,6 +194,44 @@ public class BilletView {
         majRecap();
     }
 
+    @Override
+    public void viderFormulaire() {
+        champNom.clear();
+    }
+
+    @Override
+    public void afficherSucces(String message) {
+        Dialogues.info(fenetre, "Succès", message);
+    }
+
+    @Override
+    public void afficherErreur(String message) {
+        Dialogues.erreur(fenetre, message);
+    }
+
+    // =========================================================
+    //  Logique de l'écran
+    // =========================================================
+    private void chargerSeances() {
+        controleur.chargerSeances();
+    }
+
+    private void choisirSeance(Seance seance) {
+        seanceChoisie = seance;
+        placesChoisies.clear();
+        grillePlaces.getChildren().clear();
+
+        if (seance == null) {
+            labelSeance.setText("Choisissez une séance dans la liste");
+            majRecap();
+            return;
+        }
+
+        labelSeance.setText(seance.getTitreFilm() + " — " + seance.getNomSalle()
+                + " — " + seance.getDateSeance() + " " + seance.getHeure());
+        controleur.chargerPlaces(seance.getIdSalle(), seance.getIdSeance());
+    }
+
     private void majRecap() {
         if (seanceChoisie == null || placesChoisies.isEmpty()) {
             labelRecap.setText("");
@@ -233,25 +256,8 @@ public class BilletView {
             return;
         }
 
-        int reussis = 0;
-        String erreur = null;
-        for (Place p : new ArrayList<>(placesChoisies)) {
-            String resultat = service.acheterBillet(champNom.getText(),
-                    seanceChoisie.getIdSeance(), p.getId_place(), seanceChoisie.getPrix());
-            if (resultat.equals("OK")) {
-                reussis++;
-            } else {
-                erreur = resultat;
-                break;
-            }
-        }
-
-        if (erreur == null) {
-            Dialogues.info(fenetre, "Succès", reussis + " billet(s) acheté(s) !");
-            champNom.clear();
-        } else {
-            Dialogues.erreur(fenetre, reussis + " billet(s) acheté(s), puis : " + erreur);
-        }
+        controleur.acheterBillets(champNom.getText(), seanceChoisie.getIdSeance(),
+                seanceChoisie.getPrix(), new ArrayList<>(placesChoisies));
 
         // Recharge la liste puis réaffiche la même séance, avec les places à jour
         int idSeance = seanceChoisie.getIdSeance();

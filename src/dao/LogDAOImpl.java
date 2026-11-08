@@ -18,7 +18,7 @@ import java.sql.SQLException;
 public class LogDAOImpl implements LogDAO {
 
     // Rôle courant
-    private static String roleActuel = "systeme";
+     static String roleActuel = "systeme";
 
     @Override
     public void insererLog(String tableCible, String action, Integer idCible, String detail) {

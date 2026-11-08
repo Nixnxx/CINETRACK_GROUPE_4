@@ -1,84 +1,68 @@
 package controleur;
 
-import dao.FilmDAOImpl;
-import dao.LogDAOImpl;
-import modele.Film;
-import dao.FilmDAO;
-import dao.LogDAO;
 import exceptions.FilmIntrouvableException;
 import exceptions.NoteInvalideException;
-
-import java.util.List;
+import modele.Film;
+import service.FilmService;
 
 public class FilmControleur {
-    private FilmVue vue;
-    private FilmDAO dao;
-    private LogDAO logDao;
+    private final FilmVue vue;
+    private final FilmService service;
 
     public FilmControleur(FilmVue vue) {
         this.vue = vue;
-        this.dao = new FilmDAOImpl();
-        this.logDao = new LogDAOImpl();
+        this.service = new FilmService();
     }
 
     public void chargerFilms() {
-        List<Film> films = dao.findAll();
-        vue.afficherFilms(films);
+        vue.afficherFilms(service.getTousLesFilms());
     }
 
     public void ajouterFilm(String titre, String genre, String dureeStr, String noteStr, String synopsis) {
         try {
             int duree = Integer.parseInt(dureeStr);
             double note = Double.parseDouble(noteStr);
-            Film film = new Film(titre, genre, duree, note, synopsis);
-            dao.insert(film);
 
-            // Log Java (le trigger PostgreSQL log aussi côté BD)
-            logDao.logAjoutFilm(film.getIdFilm(), titre);
-
-            vue.afficherSucces("Film ajouté avec succès !");
-            chargerFilms();
+            if (service.ajouterFilm(titre, genre, duree, note, synopsis)) {
+                vue.afficherSucces("Film ajouté avec succès !");
+                chargerFilms();
+            } else {
+                vue.afficherErreur("L'ajout du film a échoué.");
+            }
         } catch (NumberFormatException e) {
             vue.afficherErreur("Durée ou note invalide (format numérique requis).");
-        } catch (NoteInvalideException e) {
+        } catch (NoteInvalideException | IllegalArgumentException e) {
             vue.afficherErreur(e.getMessage());
         }
     }
 
     public void modifierFilm(int id, String titre, String genre, String dureeStr, String noteStr, String synopsis) {
         try {
-            // Récupérer l'ancien titre avant modification pour le log
-            Film ancien = dao.findById(id);
-            String ancienTitre = (ancien != null) ? ancien.getTitre() : "inconnu";
-
             int duree = Integer.parseInt(dureeStr);
             double note = Double.parseDouble(noteStr);
-            Film film = new Film(id, titre, genre, duree, note, synopsis);
-            dao.update(film);
 
-            // Log Java
-            logDao.logModificationFilm(id, ancienTitre, titre);
-
-            vue.afficherSucces("Film modifié avec succès !");
-            chargerFilms();
+            if (service.modifierFilm(id, titre, genre, duree, note, synopsis)) {
+                vue.afficherSucces("Film modifié avec succès !");
+                chargerFilms();
+            } else {
+                vue.afficherErreur("La modification du film a échoué.");
+            }
         } catch (NumberFormatException e) {
             vue.afficherErreur("Durée ou note invalide.");
-        } catch (FilmIntrouvableException | NoteInvalideException e) {
+        } catch (FilmIntrouvableException | NoteInvalideException | IllegalArgumentException e) {
             vue.afficherErreur(e.getMessage());
         }
     }
 
     public void supprimerFilm(int id, String titre) {
-        boolean confirmation = vue.demanderConfirmation("Supprimer le film \"" + titre + "\" ?");
-        if (confirmation) {
+        if (vue.demanderConfirmation("Supprimer le film \"" + titre + "\" ?")) {
             try {
-                dao.delete(id);
-
-                // Log Java
-                logDao.logSuppressionFilm(id, titre);
-
-                vue.afficherSucces("Film supprimé !");
-                chargerFilms();
+                if (service.supprimerFilm(id)) {
+                    vue.afficherSucces("Film supprimé !");
+                    chargerFilms();
+                } else {
+                    vue.afficherErreur("La suppression du film a échoué.");
+                }
             } catch (FilmIntrouvableException e) {
                 vue.afficherErreur(e.getMessage());
             }
@@ -86,18 +70,10 @@ public class FilmControleur {
     }
 
     public void rechercherParGenre(String genre) {
-        if (genre == null || genre.isEmpty() || "Tous".equals(genre)) {
-            chargerFilms();
-        } else {
-            // Log de la recherche
-            logDao.logRecherche("film", "genre=" + genre);
-
-            List<Film> films = dao.findByGenre(genre);
-            vue.afficherFilms(films);
-        }
+        vue.afficherFilms(service.rechercherParGenre(genre));
     }
 
     public Film getFilmParId(int id) {
-        return dao.findById(id);
+        return service.getFilm(id);
     }
 }

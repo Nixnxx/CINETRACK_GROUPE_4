@@ -1,35 +1,28 @@
 package controleur;
 
-import dao.LogDAO;
-import dao.LogDAOImpl;
 import modele.LogEntree;
+import service.LogService;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class LogControleur {
-    private LogVue vue;
-    private LogDAO dao;
+    private final LogVue vue;
+    private final LogService service = new LogService();
 
     public LogControleur(LogVue vue) {
         this.vue = vue;
-        this.dao = new LogDAOImpl();
     }
 
     // Les deux filtres peuvent être vides : on affiche alors tous les logs
     public void chargerLogs(String filtreTable, String filtreAction) {
-        String table = null;
-        if (filtreTable != null && !filtreTable.trim().isEmpty()) {
-            table = filtreTable.trim();
-        }
-
-        String action = null;
-        if (filtreAction != null && !"Toutes".equals(filtreAction)) {
-            action = filtreAction;
+        String action = filtreAction;
+        if ("Toutes".equals(filtreAction)) {
+            action = null;   // "Toutes" est un libellé de la liste déroulante
         }
 
         try {
-            List<LogEntree> logs = dao.findLogs(table, action);
+            List<LogEntree> logs = service.getLogs(filtreTable, action);
             vue.afficherLogs(logs);
         } catch (SQLException e) {
             vue.afficherErreur("Erreur chargement des logs :\n" + e.getMessage());
