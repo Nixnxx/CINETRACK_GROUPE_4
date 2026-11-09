@@ -5,13 +5,13 @@
 COUCHE : VIEW (écran Logs décrit en FXML, réservé à l'admin)
 ====================================================================
 Aucune logique métier, aucun SQL : tout est délégué au contrôleur
-fx:controller="controleur.LogControleur".
+fx:controller="controller.LogControleur".
 -->
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.LogControleur">
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LogControleur">
 
     <!-- Bandeau du haut : titre avec le nombre de logs, filtres -->
     <top>
@@ -54,7 +54,7 @@ fx:controller="controleur.LogControleur".
             <Label styleClass="badge-log, badge-insert" text="INSERT" />
             <Label styleClass="badge-log, badge-update" text="UPDATE" />
             <Label styleClass="badge-log, badge-delete" text="DELETE" />
-            <Label styleClass="badge-log, badge-connexion" text="CONNEXION" />
+            <Label styleClass="badge-log, badge-database" text="CONNEXION" />
         </HBox>
     </bottom>
 

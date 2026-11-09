@@ -1,4 +1,4 @@
-package controleur;
+package controller;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -12,10 +12,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Window;
-import modele.Place;
-import modele.Seance;
+import model.Place;
+import model.Seance;
 import service.BilletService;
-import viewfx.Dialogues;
+import view.Dialogues;
 
 import java.util.ArrayList;
 import java.util.List;

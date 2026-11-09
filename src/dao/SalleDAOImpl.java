@@ -1,7 +1,7 @@
 package dao;
 
-import modele.Salle;
-import connexion.DatabaseConnection;
+import model.Salle;
+import database.DatabaseConnection;
 
 import java.sql.*;
 import java.util.ArrayList;

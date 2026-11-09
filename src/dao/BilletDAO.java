@@ -1,6 +1,6 @@
 package dao;
 
-import modele.Billet;
+import model.Billet;
 
 import java.util.List;
 

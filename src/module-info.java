@@ -7,5 +7,5 @@ module cinetrack {
     exports main;                   // permet à JavaFX de lancer MainFx
 
     // FXMLLoader crée les contrôleurs et remplit leurs champs @FXML
-    opens controleur to javafx.fxml;
+    opens controller to javafx.fxml;
 }

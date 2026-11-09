@@ -1,4 +1,4 @@
-package viewfx;
+package view;
 
 import javafx.scene.Scene;
 

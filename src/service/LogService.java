@@ -2,7 +2,7 @@ package service;
 
 import dao.LogDAO;
 import dao.LogDAOImpl;
-import modele.LogEntree;
+import model.LogEntree;
 
 import java.sql.SQLException;
 import java.util.List;

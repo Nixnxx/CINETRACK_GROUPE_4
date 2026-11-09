@@ -1,6 +1,6 @@
 package dao;
 
-import modele.LogEntree;
+import model.LogEntree;
 
 import java.sql.SQLException;
 import java.util.List;

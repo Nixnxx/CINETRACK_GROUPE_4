@@ -4,7 +4,7 @@ import dao.FilmDAO;
 import dao.FilmDAOImpl;
 import dao.LogDAO;
 import dao.LogDAOImpl;
-import modele.Film;
+import model.Film;
 
 import java.util.List;
 

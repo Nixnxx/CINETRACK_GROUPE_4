@@ -1,6 +1,6 @@
 package dao;
 
-import modele.Place;
+import model.Place;
 
 import java.util.List;
 

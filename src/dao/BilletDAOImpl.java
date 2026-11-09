@@ -3,8 +3,8 @@ package dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import connexion.DatabaseConnection;
-import modele.Billet;
+import database.DatabaseConnection;
+import model.Billet;
 
 public class BilletDAOImpl implements BilletDAO {
 

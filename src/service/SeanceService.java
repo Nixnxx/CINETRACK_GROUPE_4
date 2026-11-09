@@ -6,9 +6,9 @@ import dao.SalleDAO;
 import dao.SalleDAOImpl;
 import dao.SeanceDAO;
 import dao.SeanceDAOImpl;
-import modele.Film;
-import modele.Salle;
-import modele.Seance;
+import model.Film;
+import model.Salle;
+import model.Seance;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

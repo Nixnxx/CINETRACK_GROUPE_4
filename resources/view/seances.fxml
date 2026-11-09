@@ -5,13 +5,13 @@
 COUCHE : VIEW (écran Séances décrit en FXML)
 ====================================================================
 Aucune logique métier, aucun SQL : tout est délégué au contrôleur
-fx:controller="controleur.SeanceControleur".
+fx:controller="controller.SeanceControleur".
 -->
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.SeanceControleur">
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SeanceControleur">
 
     <!-- Bandeau du haut : titre avec le nombre de séances, recherche par date -->
     <top>

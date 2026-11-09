@@ -1,6 +1,6 @@
 package dao;
 
-import modele.Salle;
+import model.Salle;
 
 import java.util.List;
 

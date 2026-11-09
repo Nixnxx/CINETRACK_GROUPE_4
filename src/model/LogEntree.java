@@ -1,4 +1,4 @@
-package modele;
+package model;
 
 // Une ligne de la vue SQL v_logs_recents (affichée dans l'écran Logs)
 public class LogEntree {

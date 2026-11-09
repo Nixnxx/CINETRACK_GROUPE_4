@@ -1,6 +1,6 @@
 package dao;
 
-import modele.Utilisateur;
+import model.Utilisateur;
 
 import java.sql.SQLException;
 import java.util.List;

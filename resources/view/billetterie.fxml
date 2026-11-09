@@ -5,7 +5,7 @@
 COUCHE : VIEW (écran Billetterie décrit en FXML)
 ====================================================================
 Aucune logique métier, aucun SQL : tout est délégué au contrôleur
-fx:controller="controleur.BilletControleur".
+fx:controller="controller.BilletControleur".
 La grille des places (grillePlaces) est remplie par le contrôleur,
 car le nombre de places dépend de la salle choisie.
 -->
@@ -14,7 +14,7 @@ car le nombre de places dépend de la salle choisie.
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.BilletControleur">
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BilletControleur">
 
     <!-- Bandeau du haut -->
     <top>

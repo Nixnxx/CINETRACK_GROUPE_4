@@ -1,6 +1,6 @@
 package dao;
 
-import modele.Film;
+import model.Film;
 
 import java.util.List;
 

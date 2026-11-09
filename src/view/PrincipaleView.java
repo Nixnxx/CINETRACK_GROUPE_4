@@ -1,10 +1,10 @@
-package viewfx;
+package view;
 
-import controleur.BilletControleur;
-import controleur.FilmControleur;
-import controleur.LogControleur;
-import controleur.SeanceControleur;
-import controleur.UtilisateurControleur;
+import controller.BilletControleur;
+import controller.FilmControleur;
+import controller.LogControleur;
+import controller.SeanceControleur;
+import controller.UtilisateurControleur;
 import dao.LogDAO;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;

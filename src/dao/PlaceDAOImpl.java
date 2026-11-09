@@ -1,9 +1,9 @@
 package dao;
 import java.sql.*;
-import modele.Place;
+import model.Place;
 import java.util.ArrayList;
 import java.util.List;
-import connexion.DatabaseConnection;
+import database.DatabaseConnection;
 
 public class PlaceDAOImpl implements PlaceDAO {
     @Override

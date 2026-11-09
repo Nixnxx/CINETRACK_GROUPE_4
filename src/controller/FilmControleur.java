@@ -1,4 +1,4 @@
-package controleur;
+package controller;
 
 import exceptions.FilmIntrouvableException;
 import exceptions.NoteInvalideException;
@@ -14,10 +14,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import modele.Film;
+import model.Film;
 import service.FilmService;
-import viewfx.DialogueFilmView;
-import viewfx.Dialogues;
+import view.DialogueFilmView;
+import view.Dialogues;
 
 import java.util.List;
 

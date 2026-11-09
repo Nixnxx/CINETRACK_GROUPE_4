@@ -11,13 +11,13 @@ Ce fichier décrit uniquement la structure et la disposition de l'écran.
 RÈGLES D'ARCHITECTURE :
 - Aucune logique métier, aucun code SQL.
 - Toutes les actions sont déléguées au contrôleur désigné par :
-  fx:controller="controleur.FilmControleur"
+  fx:controller="controller.FilmControleur"
 -->
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.FilmControleur">
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FilmControleur">
 
     <!-- Bandeau du haut : titre avec le nombre de films, filtre par genre -->
     <top>

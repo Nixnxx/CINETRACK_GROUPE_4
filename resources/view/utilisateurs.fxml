@@ -5,13 +5,13 @@
 COUCHE : VIEW (écran Gestionnaires décrit en FXML, réservé à l'admin)
 ====================================================================
 Aucune logique métier, aucun SQL : tout est délégué au contrôleur
-fx:controller="controleur.UtilisateurControleur".
+fx:controller="controller.UtilisateurControleur".
 -->
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.UtilisateurControleur">
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UtilisateurControleur">
 
     <!-- Bandeau du haut -->
     <top>

@@ -4,7 +4,7 @@ import dao.LogDAO;
 import dao.LogDAOImpl;
 import dao.UtilisateurDAO;
 import dao.UtilisateurDAOImpl;
-import modele.Utilisateur;
+import model.Utilisateur;
 
 import java.sql.SQLException;
 import java.util.List;

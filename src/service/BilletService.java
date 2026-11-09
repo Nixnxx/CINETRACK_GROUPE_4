@@ -3,9 +3,9 @@ package service;
 import java.util.List;
 
 import dao.*;
-import modele.Billet;
-import modele.Place;
-import modele.Seance;
+import model.Billet;
+import model.Place;
+import model.Seance;
 
 public class BilletService {
 

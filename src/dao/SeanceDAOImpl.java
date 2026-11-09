@@ -1,8 +1,8 @@
 package dao;
 
-import modele.Seance;
+import model.Seance;
 import exceptions.SalleIndisponibleException;
-import connexion.DatabaseConnection;
+import database.DatabaseConnection;
 
 import java.sql.*;
 import java.util.ArrayList;

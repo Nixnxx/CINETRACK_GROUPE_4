@@ -1,4 +1,4 @@
-package controleur;
+package controller;
 
 import exceptions.SalleIndisponibleException;
 import javafx.beans.property.SimpleStringProperty;
@@ -13,12 +13,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import modele.Film;
-import modele.Salle;
-import modele.Seance;
+import model.Film;
+import model.Salle;
+import model.Seance;
 import service.SeanceService;
-import viewfx.DialogueSeanceView;
-import viewfx.Dialogues;
+import view.DialogueSeanceView;
+import view.Dialogues;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

@@ -1,6 +1,6 @@
 package dao;
 
-import modele.Seance;
+import model.Seance;
 
 import java.util.List;
 

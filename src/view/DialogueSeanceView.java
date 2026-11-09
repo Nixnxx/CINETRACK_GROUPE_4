@@ -1,6 +1,6 @@
-package viewfx;
+package view;
 
-import controleur.SeanceControleur;
+import controller.SeanceControleur;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,8 +14,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import modele.Film;
-import modele.Salle;
+import model.Film;
+import model.Salle;
 
 import java.time.LocalDate;
 import java.util.List;

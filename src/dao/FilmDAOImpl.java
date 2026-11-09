@@ -1,8 +1,8 @@
 package dao;
 
-import modele.Film;
+import model.Film;
 import exceptions.FilmIntrouvableException;
-import connexion.DatabaseConnection;
+import database.DatabaseConnection;
 
 import java.sql.*;
 import java.util.ArrayList;

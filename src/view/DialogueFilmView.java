@@ -1,4 +1,4 @@
-package viewfx;
+package view;
 
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -15,7 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import modele.Film;
+import model.Film;
 
 public class DialogueFilmView {
 
