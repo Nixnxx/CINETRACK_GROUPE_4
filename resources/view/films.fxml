@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+====================================================================
+COUCHE : VIEW (écran Films décrit en FXML)
+====================================================================
+
+RÔLE :
+Ce fichier décrit uniquement la structure et la disposition de l'écran.
+
+RÈGLES D'ARCHITECTURE :
+- Aucune logique métier, aucun code SQL.
+- Toutes les actions sont déléguées au contrôleur désigné par :
+  fx:controller="controleur.FilmControleur"
+-->
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.FilmControleur">
+
+    <!-- Bandeau du haut : titre avec le nombre de films, filtre par genre -->
+    <top>
+        <HBox alignment="CENTER" styleClass="bandeau">
+            <Label fx:id="labelNbFilms" styleClass="titre-section" text="Films" />
+            <Region HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER_RIGHT" spacing="8.0">
+                <Label styleClass="libelle" text="Genre :" />
+                <ComboBox fx:id="comboFiltreGenre" />
+            </HBox>
+        </HBox>
+    </top>
+
+    <!-- Centre : tableau des films au-dessus, synopsis en dessous -->
+    <center>
+        <SplitPane dividerPositions="0.75" orientation="VERTICAL">
+            <items>
+                <TableView fx:id="tableFilms">
+                    <placeholder>
+                        <Label text="Aucun film" />
+                    </placeholder>
+                    <columns>
+                        <TableColumn fx:id="colId" prefWidth="60.0" text="ID" />
+                        <TableColumn fx:id="colTitre" prefWidth="300.0" text="Titre" />
+                        <TableColumn fx:id="colGenre" prefWidth="150.0" text="Genre" />
+                        <TableColumn fx:id="colDuree" prefWidth="100.0" text="Durée" />
+                        <TableColumn fx:id="colNote" prefWidth="80.0" text="Note" />
+                    </columns>
+                </TableView>
+                <VBox spacing="5.0" styleClass="panneau-synopsis">
+                    <Label styleClass="libelle" text="Synopsis" />
+                    <TextArea fx:id="textSynopsis" editable="false" wrapText="true" VBox.vgrow="ALWAYS" />
+                </VBox>
+            </items>
+        </SplitPane>
+    </center>
+
+    <!-- Bas : boutons d'action -->
+    <bottom>
+        <HBox alignment="CENTER_LEFT" spacing="8.0" styleClass="barre-boutons">
+            <Button onAction="#onAjouter" styleClass="bouton-vert" text="＋ Ajouter" />
+            <Button fx:id="btnModifier" disable="true" onAction="#onModifier" styleClass="bouton-bleu" text="✎ Modifier" />
+            <Button fx:id="btnSupprimer" disable="true" onAction="#onSupprimer" styleClass="bouton-rouge" text="✕ Supprimer" />
+            <Region prefWidth="16.0" />
+            <Button onAction="#onRafraichir" styleClass="bouton-gris" text="↺ Rafraîchir" />
+        </HBox>
+    </bottom>
+
+</BorderPane>

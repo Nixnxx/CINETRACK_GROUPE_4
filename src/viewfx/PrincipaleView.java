@@ -1,6 +1,8 @@
 package viewfx;
 
+import controleur.FilmControleur;
 import dao.LogDAO;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -18,6 +20,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class PrincipaleView {
 
     private final Stage stage;
@@ -33,7 +37,7 @@ public class PrincipaleView {
     private Pane ecranLogs;           // admin uniquement
     private Pane ecranUtilisateurs;   // admin uniquement
 
-    private FilmsView vueFilms;
+    private FilmControleur controleurFilms;      // contrôleur de films.fxml
     private SeancesView vueSeances;
     private BilletView vueBilletterie;
     private LogsView vueLogs;                    // admin uniquement
@@ -135,7 +139,7 @@ public class PrincipaleView {
         sousGenre.setOnAction(e -> {
             afficherVue("FILMS");
             setActif(btnFilms);
-            vueFilms.ouvrirRechercheGenre();
+            controleurFilms.ouvrirRechercheGenre();
         });
         sidebar.getChildren().add(sousGenre);
 
@@ -225,8 +229,7 @@ public class PrincipaleView {
 
         ecranAccueil = creerEcranAccueil();
 
-        vueFilms = new FilmsView(stage);
-        ecranFilms = vueFilms.getRacine();
+        chargerEcranFilms();
 
         vueSeances = new SeancesView(stage);
         ecranSeances = vueSeances.getRacine();
@@ -246,6 +249,17 @@ public class PrincipaleView {
         }
 
         return zoneCentrale;
+    }
+
+    // Charge l'écran Films décrit dans films.fxml (le FXMLLoader crée FilmControleur)
+    private void chargerEcranFilms() {
+        try {
+            FXMLLoader chargeur = new FXMLLoader(getClass().getResource("/view/films.fxml"));
+            ecranFilms = chargeur.load();
+            controleurFilms = chargeur.getController();
+        } catch (IOException e) {
+            throw new RuntimeException("Impossible de charger films.fxml", e);
+        }
     }
 
     private VBox creerEcranAccueil() {
