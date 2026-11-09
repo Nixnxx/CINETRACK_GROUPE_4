@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+====================================================================
+COUCHE : VIEW (écran Billetterie décrit en FXML)
+====================================================================
+Aucune logique métier, aucun SQL : tout est délégué au contrôleur
+fx:controller="controleur.BilletControleur".
+La grille des places (grillePlaces) est remplie par le contrôleur,
+car le nombre de places dépend de la salle choisie.
+-->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.BilletControleur">
+
+    <!-- Bandeau du haut -->
+    <top>
+        <HBox alignment="CENTER_LEFT" styleClass="bandeau">
+            <Label styleClass="titre-section" text="Billetterie" />
+        </HBox>
+    </top>
+
+    <!-- Gauche : liste des séances à venir -->
+    <left>
+        <TableView fx:id="tableSeances" prefWidth="560.0">
+            <placeholder>
+                <Label text="Aucune séance à venir" />
+            </placeholder>
+            <columns>
+                <TableColumn fx:id="colFilm" prefWidth="180.0" text="Film" />
+                <TableColumn fx:id="colSalle" prefWidth="120.0" text="Salle" />
+                <TableColumn fx:id="colDate" prefWidth="90.0" text="Date" />
+                <TableColumn fx:id="colHeure" prefWidth="65.0" text="Heure" />
+                <TableColumn fx:id="colPrix" prefWidth="75.0" text="Prix" />
+            </columns>
+        </TableView>
+    </left>
+
+    <!-- Centre : grille des places et achat -->
+    <center>
+        <VBox spacing="10.0">
+            <padding>
+                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+            </padding>
+
+            <Label fx:id="labelSeance" styleClass="titre-section" text="Choisissez une séance dans la liste" />
+
+            <Label alignment="CENTER" maxWidth="Infinity" styleClass="libelle" text="───────  ÉCRAN  ───────" />
+
+            <ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+                <content>
+                    <GridPane fx:id="grillePlaces" hgap="6.0" vgap="6.0">
+                        <padding>
+                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                    </GridPane>
+                </content>
+            </ScrollPane>
+
+            <Label styleClass="libelle" text="Gris : libre   ·   Bleu : choisie   ·   Rouge : déjà vendue" />
+
+            <Label fx:id="labelRecap" styleClass="libelle" text="" />
+
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                <Label styleClass="libelle" text="Nom du client :" />
+                <TextField fx:id="champNom" prefColumnCount="18" />
+                <Button fx:id="btnAcheter" disable="true" onAction="#onAcheter" styleClass="bouton-vert" text="Acheter" />
+            </HBox>
+        </VBox>
+    </center>
+
+</BorderPane>

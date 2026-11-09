@@ -1,6 +1,10 @@
 package viewfx;
 
+import controleur.BilletControleur;
 import controleur.FilmControleur;
+import controleur.LogControleur;
+import controleur.SeanceControleur;
+import controleur.UtilisateurControleur;
 import dao.LogDAO;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -38,10 +42,10 @@ public class PrincipaleView {
     private Pane ecranUtilisateurs;   // admin uniquement
 
     private FilmControleur controleurFilms;      // contrôleur de films.fxml
-    private SeancesView vueSeances;
-    private BilletView vueBilletterie;
-    private LogsView vueLogs;                    // admin uniquement
-    private UtilisateursView vueUtilisateurs;    // admin uniquement
+    private SeanceControleur controleurSeances;
+    private BilletControleur controleurBilletterie;
+    private LogControleur controleurLogs;                    // admin uniquement
+    private UtilisateurControleur controleurUtilisateurs;    // admin uniquement
 
     private Label labelStatut;
     private Button btnActif = null;
@@ -153,7 +157,7 @@ public class PrincipaleView {
         sousPlanning.setOnAction(e -> {
             afficherVue("SEANCES");
             setActif(btnSeances);
-            vueSeances.chargerPlanningAujourdhui();
+            controleurSeances.chargerPlanningAujourdhui();
         });
         sidebar.getChildren().add(sousPlanning);
 
@@ -229,36 +233,43 @@ public class PrincipaleView {
 
         ecranAccueil = creerEcranAccueil();
 
-        chargerEcranFilms();
+        FXMLLoader chargeur = chargerFxml("films.fxml");
+        ecranFilms = chargeur.getRoot();
+        controleurFilms = chargeur.getController();
 
-        vueSeances = new SeancesView(stage);
-        ecranSeances = vueSeances.getRacine();
+        chargeur = chargerFxml("seances.fxml");
+        ecranSeances = chargeur.getRoot();
+        controleurSeances = chargeur.getController();
 
-        vueBilletterie = new BilletView(stage);
-        ecranBilletterie = vueBilletterie.getRacine();
+        chargeur = chargerFxml("billetterie.fxml");
+        ecranBilletterie = chargeur.getRoot();
+        controleurBilletterie = chargeur.getController();
 
         zoneCentrale.getChildren().addAll(ecranAccueil, ecranFilms, ecranSeances, ecranBilletterie);
 
         if (estAdmin()) {
-            vueLogs = new LogsView(stage);
-            ecranLogs = vueLogs.getRacine();
+            chargeur = chargerFxml("logs.fxml");
+            ecranLogs = chargeur.getRoot();
+            controleurLogs = chargeur.getController();
 
-            vueUtilisateurs = new UtilisateursView(stage);
-            ecranUtilisateurs = vueUtilisateurs.getRacine();
+            chargeur = chargerFxml("utilisateurs.fxml");
+            ecranUtilisateurs = chargeur.getRoot();
+            controleurUtilisateurs = chargeur.getController();
             zoneCentrale.getChildren().addAll(ecranLogs, ecranUtilisateurs);
         }
 
         return zoneCentrale;
     }
 
-    // Charge l'écran Films décrit dans films.fxml (le FXMLLoader crée FilmControleur)
-    private void chargerEcranFilms() {
+    // Charge un écran décrit en FXML : le FXMLLoader crée le contrôleur (fx:controller).
+    // On récupère ensuite l'écran avec getRoot() et le contrôleur avec getController().
+    private FXMLLoader chargerFxml(String fichier) {
         try {
-            FXMLLoader chargeur = new FXMLLoader(getClass().getResource("/view/films.fxml"));
-            ecranFilms = chargeur.load();
-            controleurFilms = chargeur.getController();
+            FXMLLoader chargeur = new FXMLLoader(getClass().getResource("/view/" + fichier));
+            chargeur.load();
+            return chargeur;
         } catch (IOException e) {
-            throw new RuntimeException("Impossible de charger films.fxml", e);
+            throw new RuntimeException("Impossible de charger " + fichier, e);
         }
     }
 
@@ -288,11 +299,11 @@ public class PrincipaleView {
 
     // Affiche un seul écran et cache les autres
     public void afficherVue(String nomVue) {
-        if (nomVue.equals("LOGS") && vueLogs != null) {
-            vueLogs.rafraichir();     // pour voir les logs les plus récents
+        if (nomVue.equals("LOGS") && controleurLogs != null) {
+            controleurLogs.rafraichir();     // pour voir les logs les plus récents
         }
-        if (nomVue.equals("BILLETTERIE") && vueBilletterie != null) {
-            vueBilletterie.rafraichir();   // séances à jour à chaque ouverture
+        if (nomVue.equals("BILLETTERIE") && controleurBilletterie != null) {
+            controleurBilletterie.rafraichir();   // séances à jour à chaque ouverture
         }
         montrerEcran(ecranAccueil, nomVue.equals("ACCUEIL"));
         montrerEcran(ecranFilms, nomVue.equals("FILMS"));

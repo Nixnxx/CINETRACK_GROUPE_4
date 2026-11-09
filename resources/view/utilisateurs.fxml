@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+====================================================================
+COUCHE : VIEW (écran Gestionnaires décrit en FXML, réservé à l'admin)
+====================================================================
+Aucune logique métier, aucun SQL : tout est délégué au contrôleur
+fx:controller="controleur.UtilisateurControleur".
+-->
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.UtilisateurControleur">
+
+    <!-- Bandeau du haut -->
+    <top>
+        <HBox alignment="CENTER" styleClass="bandeau">
+            <Label fx:id="labelTitre" styleClass="titre-section" text="Gestionnaires" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label styleClass="admin-info" text="⚙  Administration" />
+        </HBox>
+    </top>
+
+    <!-- Centre : tableau des gestionnaires -->
+    <center>
+        <TableView fx:id="tableUtilisateurs">
+            <placeholder>
+                <Label text="Aucun gestionnaire" />
+            </placeholder>
+            <columns>
+                <TableColumn fx:id="colId" prefWidth="60.0" text="ID" />
+                <TableColumn fx:id="colLogin" prefWidth="300.0" text="Identifiant" />
+                <TableColumn fx:id="colDate" prefWidth="200.0" text="Créé le" />
+            </columns>
+        </TableView>
+    </center>
+
+    <!-- Bas : formulaire de création, puis boutons -->
+    <bottom>
+        <VBox>
+            <HBox alignment="CENTER_LEFT" spacing="8.0" styleClass="formulaire-ligne">
+                <Label styleClass="libelle" text="Identifiant :" />
+                <TextField fx:id="champLogin" prefColumnCount="10" />
+                <Label styleClass="libelle" text="Mot de passe :" />
+                <PasswordField fx:id="champMotDePasse" prefColumnCount="10" />
+                <Label styleClass="libelle" text="Confirmation :" />
+                <PasswordField fx:id="champConfirmation" onAction="#onAjouter" prefColumnCount="10" />
+                <Button onAction="#onAjouter" styleClass="bouton-vert" text="＋ Ajouter" />
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="8.0" styleClass="barre-boutons">
+                <Button fx:id="btnSupprimer" disable="true" onAction="#onSupprimer" styleClass="bouton-rouge" text="✕ Supprimer" />
+                <Region prefWidth="16.0" />
+                <Button onAction="#onRafraichir" styleClass="bouton-gris" text="↺ Rafraîchir" />
+            </HBox>
+        </VBox>
+    </bottom>
+
+</BorderPane>
