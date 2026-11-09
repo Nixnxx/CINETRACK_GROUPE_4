@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+====================================================================
+COUCHE : VIEW (écran Séances décrit en FXML)
+====================================================================
+Aucune logique métier, aucun SQL : tout est délégué au contrôleur
+fx:controller="controller.SeanceControleur".
+-->
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SeanceControleur">
+
+    <!-- Bandeau du haut : titre avec le nombre de séances, recherche par date -->
+    <top>
+        <HBox alignment="CENTER" styleClass="bandeau">
+            <Label fx:id="labelNbSeances" styleClass="titre-section" text="Séances" />
+            <Region HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER_RIGHT" spacing="8.0">
+                <Label styleClass="libelle" text="Date (AAAA-MM-JJ) :" />
+                <TextField fx:id="champDate" onAction="#onRechercher" prefColumnCount="10" />
+                <Button onAction="#onRechercher" styleClass="bouton-bleu" text="Rechercher" />
+            </HBox>
+        </HBox>
+    </top>
+
+    <!-- Centre : tableau des séances -->
+    <center>
+        <TableView fx:id="tableSeances">
+            <placeholder>
+                <Label text="Aucune séance" />
+            </placeholder>
+            <columns>
+                <TableColumn fx:id="colId" prefWidth="60.0" text="ID" />
+                <TableColumn fx:id="colFilm" prefWidth="300.0" text="Film" />
+                <TableColumn fx:id="colSalle" prefWidth="140.0" text="Salle" />
+                <TableColumn fx:id="colDate" prefWidth="120.0" text="Date" />
+                <TableColumn fx:id="colHeure" prefWidth="90.0" text="Heure" />
+                <TableColumn fx:id="colPlaces" prefWidth="110.0" text="Places dispo" />
+            </columns>
+        </TableView>
+    </center>
+
+    <!-- Bas : boutons d'action -->
+    <bottom>
+        <HBox alignment="CENTER_LEFT" spacing="8.0" styleClass="barre-boutons">
+            <Button onAction="#onAjouter" styleClass="bouton-vert" text="＋ Ajouter une séance" />
+            <Button fx:id="btnSupprimer" disable="true" onAction="#onSupprimer" styleClass="bouton-rouge" text="✕ Supprimer" />
+            <Region prefWidth="16.0" />
+            <Button onAction="#onRafraichir" styleClass="bouton-gris" text="↺ Rafraîchir" />
+        </HBox>
+    </bottom>
+
+</BorderPane>

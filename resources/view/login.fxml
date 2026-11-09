@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+====================================================================
+COUCHE : VIEW (écran de database décrit en FXML)
+====================================================================
+Aucune logique métier, aucun SQL : tout est délégué au contrôleur
+fx:controller="controller.LoginControleur".
+-->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginControleur">
+
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+
+    <VBox alignment="CENTER" spacing="12.0" styleClass="carte">
+        <Label styleClass="titre" text="CinéTrack" />
+        <Label styleClass="sous-titre" text="Connexion à l'application" />
+
+        <GridPane hgap="10.0" vgap="12.0">
+            <columnConstraints>
+                <ColumnConstraints />
+                <ColumnConstraints hgrow="ALWAYS" />
+            </columnConstraints>
+
+            <Label styleClass="libelle" text="Identifiant :" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="champLogin" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" />
+
+            <Label styleClass="libelle" text="Mot de passe :" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <PasswordField fx:id="champMotDePasse" onAction="#onConnecter" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+        </GridPane>
+
+        <Label fx:id="labelErreur" minHeight="16.0" styleClass="erreur" />
+
+        <Button maxWidth="Infinity" onAction="#onConnecter" prefHeight="36.0" styleClass="bouton-principal" text="Se connecter" />
+    </VBox>
+
+</StackPane>

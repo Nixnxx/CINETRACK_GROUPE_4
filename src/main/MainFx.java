@@ -1,13 +1,16 @@
 package main;
 
+import controller.LoginControleur;
 import dao.LogDAO;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import viewfx.LoginView;
-import viewfx.PrincipaleView;
-import viewfx.Theme;
+import view.PrincipaleView;
+import view.Theme;
+
+import java.io.IOException;
 
 public class MainFx extends Application {
 
@@ -21,11 +24,20 @@ public class MainFx extends Application {
     }
 
     private void afficherLogin() {
-        LoginView login = new LoginView(() -> afficherPrincipale());
-        stage.setTitle("CinéTrack — Connexion");
-        stage.setResizable(false);
-        stage.setScene(creerScene(login.getRacine(), 400, 340));
-        stage.centerOnScreen();
+        try {
+            // login.fxml est chargé ici ; le FXMLLoader crée LoginControleur
+            FXMLLoader chargeur = new FXMLLoader(getClass().getResource("/view/login.fxml"));
+            Parent racine = chargeur.load();
+            LoginControleur controleur = chargeur.getController();
+            controleur.setSurConnexionReussie(() -> afficherPrincipale());
+
+            stage.setTitle("CinéTrack — Connexion");
+            stage.setResizable(false);
+            stage.setScene(creerScene(racine, 400, 340));
+            stage.centerOnScreen();
+        } catch (IOException e) {
+            throw new RuntimeException("Impossible de charger login.fxml", e);
+        }
     }
 
     private void afficherPrincipale() {
