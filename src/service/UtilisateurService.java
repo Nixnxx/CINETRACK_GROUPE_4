@@ -15,7 +15,7 @@ public class UtilisateurService {
     // static : partagé par toutes les instances du service.
     private static Utilisateur utilisateurCourant;
 
-    private final UtilisateurDAO dao = new UtilisateurDAOImpl();
+    private final UtilisateurDAO utilisateurDao = new UtilisateurDAOImpl();
     private final LogDAO logDao = new LogDAOImpl();
 
     public static Utilisateur getUtilisateurCourant() {
@@ -31,13 +31,13 @@ public class UtilisateurService {
         if (login == null || login.isBlank() || motDePasse == null || motDePasse.isEmpty()) {
             return "Identifiant et mot de passe requis.";
         }
-        Utilisateur u = dao.authentifier(login.trim(), motDePasse);
-        if (u == null) {
+        Utilisateur utilisateur = utilisateurDao.authentifier(login.trim(), motDePasse);
+        if (utilisateur == null) {
             return "Identifiant ou mot de passe incorrect.";
         }
-        utilisateurCourant = u;
-        LogDAO.setRoleActuel(u.getRole());   // le rôle doit être défini avant le log
-        logDao.logConnexion(u.getLogin());
+        utilisateurCourant = utilisateur;
+        LogDAO.setRoleActuel(utilisateur.getRole());   // le rôle doit être défini avant le log
+        logDao.logConnexion(utilisateur.getLogin());
         return null;
     }
 
@@ -50,39 +50,40 @@ public class UtilisateurService {
 
     public List<Utilisateur> getGestionnaires() throws SQLException {
         verifierAdmin();
-        return dao.findGestionnaires();
+        return utilisateurDao.findGestionnaires();
     }
 
     // Lance IllegalStateException (pas admin) ou IllegalArgumentException (données invalides)
-    public void ajouterGestionnaire(String login, String motDePasse, String confirmation) throws SQLException {
+    public void ajouterGestionnaire(String login, String motDePasse,
+                                    String confirmationMotDePasse) throws SQLException {
         verifierAdmin();
 
-        String l = (login == null) ? "" : login.trim();
-        if (!l.matches("[A-Za-z0-9_.-]{3,30}")) {
+        String loginNettoye = (login == null) ? "" : login.trim();
+        if (!loginNettoye.matches("[A-Za-z0-9_.-]{3,30}")) {
             throw new IllegalArgumentException("Identifiant invalide : 3 à 30 caractères "
                     + "(lettres, chiffres, point, tiret, underscore).");
         }
         if (motDePasse == null || motDePasse.length() < 6) {
             throw new IllegalArgumentException("Le mot de passe doit contenir au moins 6 caractères.");
         }
-        if (!motDePasse.equals(confirmation)) {
+        if (!motDePasse.equals(confirmationMotDePasse)) {
             throw new IllegalArgumentException("Les deux mots de passe ne correspondent pas.");
         }
-        if (dao.loginExiste(l)) {
+        if (utilisateurDao.loginExiste(loginNettoye)) {
             throw new IllegalArgumentException("Cet identifiant existe déjà.");
         }
 
-        int id = dao.insererGestionnaire(l, motDePasse);
+        int idNouveauGestionnaire = utilisateurDao.insererGestionnaire(loginNettoye, motDePasse);
 
         // Log Java (le trigger PostgreSQL log aussi côté BD)
-        logDao.logAjoutUtilisateur(id, l);
+        logDao.logAjoutUtilisateur(idNouveauGestionnaire, loginNettoye);
     }
 
     // Lance IllegalStateException si l'utilisateur connecté n'est pas admin
     public boolean supprimerGestionnaire(int idUtilisateur, String login) throws SQLException {
         verifierAdmin();
 
-        if (!dao.supprimerGestionnaire(idUtilisateur)) {
+        if (!utilisateurDao.supprimerGestionnaire(idUtilisateur)) {
             return false;
         }
         logDao.logSuppressionUtilisateur(idUtilisateur, login);
