@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+====================================================================
+COUCHE : VIEW (formulaire d'ajout / modification d'un film)
+====================================================================
+Fenêtre modale ouverte par FilmControleur.
+fx:controller="controller.DialogueFilmControleur"
+-->
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane stylesheets="@../css/theme.css" prefHeight="440.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DialogueFilmControleur">
+
+    <center>
+        <GridPane hgap="10.0" styleClass="formulaire" vgap="12.0">
+            <columnConstraints>
+                <ColumnConstraints />
+                <ColumnConstraints hgrow="ALWAYS" />
+            </columnConstraints>
+
+            <Label styleClass="libelle" text="Titre :" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="champTitre" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+            <Label styleClass="libelle" text="Genre :" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <ComboBox fx:id="comboGenre" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Action" />
+                        <String fx:value="Comédie" />
+                        <String fx:value="Drame" />
+                        <String fx:value="Animation" />
+                        <String fx:value="Horreur" />
+                        <String fx:value="Science-Fiction" />
+                        <String fx:value="Thriller" />
+                        <String fx:value="Romance" />
+                        <String fx:value="Documentaire" />
+                    </FXCollections>
+                </items>
+                <value>
+                    <String fx:value="Action" />
+                </value>
+            </ComboBox>
+
+            <Label styleClass="libelle" text="Durée (min) :" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <TextField fx:id="champDuree" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+            <Label styleClass="libelle" text="Note (0–10) :" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <TextField fx:id="champNote" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+            <Label styleClass="libelle" text="Synopsis :" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.valignment="TOP" />
+            <TextArea fx:id="champSynopsis" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS" />
+        </GridPane>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="8.0" styleClass="barre-dialogue">
+            <Button onAction="#onAnnuler" prefWidth="90.0" styleClass="bouton-gris" text="Annuler" />
+            <Button onAction="#onValider" prefWidth="90.0" styleClass="bouton-principal" text="Valider" />
+        </HBox>
+    </bottom>
+
+</BorderPane>

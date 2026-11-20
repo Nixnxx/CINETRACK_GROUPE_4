@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+====================================================================
+COUCHE : VIEW (fenêtre de message : information, erreur, confirmation)
+====================================================================
+Remplace les anciennes boîtes Alert de la classe Dialogues.
+Ouverte par DialogueMessageControleur (info, erreur, confirmer).
+fx:controller="controller.DialogueMessageControleur"
+-->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefWidth="420.0" stylesheets="@../css/theme.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DialogueMessageControleur">
+
+    <center>
+        <Label fx:id="labelMessage" maxWidth="Infinity" wrapText="true">
+            <padding>
+                <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
+            </padding>
+        </Label>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="8.0" styleClass="barre-dialogue">
+            <Button fx:id="btnNon" onAction="#onNon" prefWidth="90.0" styleClass="bouton-gris" text="Non" />
+            <Button fx:id="btnOui" defaultButton="true" onAction="#onOui" prefWidth="90.0" styleClass="bouton-principal" text="OK" />
+        </HBox>
+    </bottom>
+
+</BorderPane>

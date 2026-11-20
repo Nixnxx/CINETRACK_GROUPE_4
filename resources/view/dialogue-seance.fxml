@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+====================================================================
+COUCHE : VIEW (formulaire d'ajout d'une séance)
+====================================================================
+Fenêtre modale ouverte par SeanceControleur.
+fx:controller="controller.DialogueSeanceControleur"
+Les listes des films et des salles sont remplies par le contrôleur.
+-->
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane stylesheets="@../css/theme.css" prefHeight="390.0" prefWidth="460.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DialogueSeanceControleur">
+
+    <center>
+        <GridPane hgap="10.0" styleClass="formulaire" vgap="12.0">
+            <columnConstraints>
+                <ColumnConstraints />
+                <ColumnConstraints hgrow="ALWAYS" />
+            </columnConstraints>
+
+            <Label styleClass="libelle" text="Film :" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <ComboBox fx:id="comboFilm" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+            <Label styleClass="libelle" text="Salle :" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <ComboBox fx:id="comboSalle" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+            <Label styleClass="libelle" text="Date (AAAA-MM-JJ) :" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <TextField fx:id="champDate" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+            <Label styleClass="libelle" text="Heure (HH:MM) :" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <TextField fx:id="champHeure" text="20:00" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+            <Label styleClass="libelle" text="Places disponibles :" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+            <TextField fx:id="champPlaces" text="100" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+            <Label styleClass="libelle" text="Prix :" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+            <TextField fx:id="champPrix" text="250" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+        </GridPane>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="8.0" styleClass="barre-dialogue">
+            <Button onAction="#onAnnuler" prefWidth="90.0" styleClass="bouton-gris" text="Annuler" />
+            <Button onAction="#onValider" prefWidth="90.0" styleClass="bouton-principal" text="Valider" />
+        </HBox>
+    </bottom>
+
+</BorderPane>

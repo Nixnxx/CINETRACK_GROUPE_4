@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+====================================================================
+COUCHE : VIEW (fenêtre principale décrite en FXML)
+====================================================================
+Barre du haut, menu de gauche (sidebar), zone centrale et barre de statut.
+Les écrans (films, séances...) sont chargés dans la zone centrale par
+le contrôleur fx:controller="controller.PrincipaleControleur".
+-->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane stylesheets="@../css/theme.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PrincipaleControleur">
+
+    <!-- Barre du haut : nom de l'application, menu À propos, badge du rôle -->
+    <top>
+        <HBox alignment="CENTER" styleClass="barre-haute">
+            <HBox alignment="CENTER_LEFT" spacing="14.0">
+                <Label styleClass="point" text="●" />
+                <Label styleClass="nom-app" text="CinéTrack" />
+                <Label styleClass="separateur-texte" text="|" />
+                <Label styleClass="sous-nom" text="Le Lumière" />
+            </HBox>
+            <Region HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER_RIGHT" spacing="8.0">
+                <MenuBar>
+                    <menus>
+                        <Menu text="À propos">
+                            <items>
+                                <MenuItem onAction="#onAPropos" text="À propos de CinéTrack" />
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+                <Label fx:id="badge" styleClass="badge" />
+            </HBox>
+        </HBox>
+    </top>
+
+    <!-- Menu de gauche -->
+    <left>
+        <VBox maxWidth="200.0" minWidth="200.0" prefWidth="200.0" styleClass="sidebar">
+            <Label styleClass="section-label" text="NAVIGATION" />
+            <Button fx:id="btnFilms" maxWidth="Infinity" onAction="#onFilms" styleClass="nav-bouton" text="🎬  Films" />
+            <Button fx:id="btnSeances" maxWidth="Infinity" onAction="#onSeances" styleClass="nav-bouton" text="🕐  Séances" />
+            <Button fx:id="btnBilletterie" maxWidth="Infinity" onAction="#onBilletterie" styleClass="nav-bouton" text="🎟  Billetterie" />
+            <Button maxWidth="Infinity" onAction="#onRechercheGenre" styleClass="sous-bouton" text="› Rechercher par genre" />
+
+            <Region maxHeight="1.0" minHeight="1.0" prefHeight="1.0" styleClass="separateur">
+                <VBox.margin>
+                    <Insets bottom="10.0" top="10.0" />
+                </VBox.margin>
+            </Region>
+
+            <Label styleClass="section-label" text="ACCÈS RAPIDE" />
+            <Button maxWidth="Infinity" onAction="#onPlanning" styleClass="sous-bouton" text="› Planning du jour" />
+
+            <!-- Section réservée à l'admin (cachée pour un gestionnaire par le contrôleur) -->
+            <VBox fx:id="sectionAdmin">
+                <Region maxHeight="1.0" minHeight="1.0" prefHeight="1.0" styleClass="separateur">
+                    <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                    </VBox.margin>
+                </Region>
+                <Label styleClass="section-label" text="ADMINISTRATION" />
+                <Button fx:id="btnLogs" maxWidth="Infinity" onAction="#onLogs" styleClass="nav-bouton" text="📋  Logs" />
+                <Button fx:id="btnUtilisateurs" maxWidth="Infinity" onAction="#onUtilisateurs" styleClass="nav-bouton" text="👥  Gestionnaires" />
+            </VBox>
+
+            <!-- Pousse la version tout en bas -->
+            <Region VBox.vgrow="ALWAYS" />
+            <Label alignment="CENTER" maxWidth="Infinity" styleClass="version" text="v1.0  —  BTS SIO SLAM">
+                <VBox.margin>
+                    <Insets bottom="12.0" />
+                </VBox.margin>
+            </Label>
+        </VBox>
+    </left>
+
+    <!-- Zone centrale : un écran à la fois (l'accueil est affiché au départ) -->
+    <center>
+        <StackPane fx:id="zoneCentrale">
+            <VBox fx:id="ecranAccueil" alignment="CENTER" spacing="10.0">
+                <Label styleClass="titre-accueil" text="Bienvenue dans CinéTrack" />
+                <Label fx:id="sousTitreAccueil" styleClass="sous-titre-accueil" />
+                <Label styleClass="indication" text="Sélectionnez une section dans le menu à gauche." />
+            </VBox>
+        </StackPane>
+    </center>
+
+    <!-- Barre de statut -->
+    <bottom>
+        <HBox styleClass="barre-statut">
+            <Label fx:id="labelStatut" styleClass="statut" />
+        </HBox>
+    </bottom>
+
+</BorderPane>

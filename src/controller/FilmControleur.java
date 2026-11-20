@@ -12,12 +12,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-import javafx.stage.Stage;
 import javafx.stage.Window;
 import model.Film;
 import service.FilmService;
-import view.DialogueFilmView;
-import view.Dialogues;
 
 import java.util.List;
 
@@ -95,7 +92,7 @@ public class FilmControleur {
     // =========================================================
     @FXML
     private void onAjouter() {
-        DialogueFilmView d = new DialogueFilmView((Stage) fenetre(), null);
+        DialogueFilmControleur d = DialogueFilmControleur.ouvrir(fenetre(), null);
         if (d.estConfirme()) {
             ajouterFilm(d.getTitre(), d.getGenre(), d.getDuree(), d.getNote(), d.getSynopsis());
         }
@@ -107,7 +104,7 @@ public class FilmControleur {
         if (film == null) {
             return;
         }
-        DialogueFilmView d = new DialogueFilmView((Stage) fenetre(), film);
+        DialogueFilmControleur d = DialogueFilmControleur.ouvrir(fenetre(), film);
         if (d.estConfirme()) {
             modifierFilm(film.getIdFilm(), d.getTitre(), d.getGenre(),
                     d.getDuree(), d.getNote(), d.getSynopsis());
@@ -172,7 +169,7 @@ public class FilmControleur {
     }
 
     public void supprimerFilm(int id, String titre) {
-        if (Dialogues.confirmer(fenetre(), "Supprimer le film \"" + titre + "\" ?")) {
+        if (DialogueMessageControleur.confirmer(fenetre(), "Supprimer le film \"" + titre + "\" ?")) {
             try {
                 if (service.supprimerFilm(id)) {
                     afficherSucces("Film supprimé !");
@@ -210,11 +207,11 @@ public class FilmControleur {
     }
 
     private void afficherSucces(String message) {
-        Dialogues.info(fenetre(), "Succès", message);
+        DialogueMessageControleur.info(fenetre(), "Succès", message);
     }
 
     private void afficherErreur(String message) {
-        Dialogues.erreur(fenetre(), message);
+        DialogueMessageControleur.erreur(fenetre(), message);
     }
 
     // Fenêtre propriétaire des boîtes de dialogue (null tant que l'écran n'est pas affiché)

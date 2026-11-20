@@ -15,7 +15,6 @@ import javafx.stage.Window;
 import model.Place;
 import model.Seance;
 import service.BilletService;
-import view.Dialogues;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +100,7 @@ public class BilletControleur {
         donnees.setAll(service.seancesAVenir());
     }
 
-    // Appelée par PrincipaleView à chaque ouverture de l'écran (séances à jour)
+    // Appelée par PrincipaleControleur à chaque ouverture de l'écran (séances à jour)
     public void rafraichir() {
         chargerSeances();
     }
@@ -139,10 +138,10 @@ public class BilletControleur {
         }
 
         if (erreur == null) {
-            Dialogues.info(fenetre(), "Succès", reussis + " billet(s) acheté(s) !");
+            DialogueMessageControleur.info(fenetre(), "Succès", reussis + " billet(s) acheté(s) !");
             champNom.clear();
         } else {
-            Dialogues.erreur(fenetre(), reussis + " billet(s) acheté(s), puis : " + erreur);
+            DialogueMessageControleur.erreur(fenetre(), reussis + " billet(s) acheté(s), puis : " + erreur);
         }
     }
 

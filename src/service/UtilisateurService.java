@@ -64,7 +64,7 @@ public class UtilisateurService {
                     + "(lettres, chiffres, point, tiret, underscore).");
         }
         if (motDePasse == null || motDePasse.length() < 6) {
-            throw new IllegalArgumentException("Le mot de passe doit contenir au moins 6 caractères.");
+               throw new IllegalArgumentException("Le mot de passe doit contenir au moins 6 caractères.");
         }
         if (!motDePasse.equals(confirmationMotDePasse)) {
             throw new IllegalArgumentException("Les deux mots de passe ne correspondent pas.");

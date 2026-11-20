@@ -2,7 +2,7 @@
 
 <!--
 ====================================================================
-COUCHE : VIEW (écran de database décrit en FXML)
+COUCHE : VIEW (écran de connexion décrit en FXML)
 ====================================================================
 Aucune logique métier, aucun SQL : tout est délégué au contrôleur
 fx:controller="controller.LoginControleur".
@@ -12,7 +12,7 @@ fx:controller="controller.LoginControleur".
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginControleur">
+<StackPane stylesheets="@../css/theme.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginControleur">
 
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

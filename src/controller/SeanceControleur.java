@@ -11,14 +11,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import javafx.stage.Window;
 import model.Film;
 import model.Salle;
 import model.Seance;
 import service.SeanceService;
-import view.DialogueSeanceView;
-import view.Dialogues;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -98,7 +95,7 @@ public class SeanceControleur {
 
     @FXML
     private void onAjouter() {
-        DialogueSeanceView d = new DialogueSeanceView((Stage) fenetre(), this);
+        DialogueSeanceControleur d = DialogueSeanceControleur.ouvrir(fenetre(), getTousFilms(), getToutesSalles());
         if (d.estConfirme()) {
             if (d.getIdFilm() == -1 || d.getIdSalle() == -1) {
                 afficherErreur("Choisissez un film et une salle.");
@@ -114,7 +111,7 @@ public class SeanceControleur {
         if (seance == null) {
             return;
         }
-        boolean oui = Dialogues.confirmer(fenetre(),
+        boolean oui = DialogueMessageControleur.confirmer(fenetre(),
                 "Supprimer la séance de \"" + seance.getTitreFilm() + "\" ?");
         if (oui) {
             supprimerSeance(seance.getIdSeance());
@@ -175,7 +172,7 @@ public class SeanceControleur {
         }
     }
 
-    // Utilisées par DialogueSeanceView pour remplir les listes déroulantes
+    // Utilisées pour remplir les listes déroulantes du formulaire de séance
     public List<Film> getTousFilms() {
         return service.getTousFilms();
     }
@@ -200,11 +197,11 @@ public class SeanceControleur {
     }
 
     private void afficherSucces(String message) {
-        Dialogues.info(fenetre(), "Succès", message);
+        DialogueMessageControleur.info(fenetre(), "Succès", message);
     }
 
     private void afficherErreur(String message) {
-        Dialogues.erreur(fenetre(), message);
+        DialogueMessageControleur.erreur(fenetre(), message);
     }
 
     // Fenêtre propriétaire des boîtes de dialogue (null tant que l'écran n'est pas affiché)

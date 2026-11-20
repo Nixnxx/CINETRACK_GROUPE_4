@@ -13,7 +13,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Window;
 import model.Utilisateur;
 import service.UtilisateurService;
-import view.Dialogues;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -119,7 +118,7 @@ public class UtilisateurControleur {
         try {
             service.verifierAdmin();   // avant de demander la confirmation
 
-            if (!Dialogues.confirmer(fenetre(), "Supprimer le gestionnaire \"" + login + "\" ?")) {
+            if (!DialogueMessageControleur.confirmer(fenetre(), "Supprimer le gestionnaire \"" + login + "\" ?")) {
                 return;
             }
             if (service.supprimerGestionnaire(idUtilisateur, login)) {
@@ -152,11 +151,11 @@ public class UtilisateurControleur {
     }
 
     private void afficherSucces(String message) {
-        Dialogues.info(fenetre(), "Succès", message);
+        DialogueMessageControleur.info(fenetre(), "Succès", message);
     }
 
     private void afficherErreur(String message) {
-        Dialogues.erreur(fenetre(), message);
+        DialogueMessageControleur.erreur(fenetre(), message);
     }
 
     private void erreurBase(SQLException e) {

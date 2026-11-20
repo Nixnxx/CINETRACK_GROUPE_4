@@ -13,7 +13,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Window;
 import model.LogEntree;
 import service.LogService;
-import view.Dialogues;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -119,11 +118,11 @@ public class LogControleur {
             donnees.setAll(logs);
             labelNbLogs.setText("Logs d'activité (" + logs.size() + ")");
         } catch (SQLException e) {
-            Dialogues.erreur(fenetre(), "Erreur chargement des logs :\n" + e.getMessage());
+            DialogueMessageControleur.erreur(fenetre(), "Erreur chargement des logs :\n" + e.getMessage());
         }
     }
 
-    // Appelée par PrincipaleView quand on ouvre l'écran, pour voir les logs les plus récents
+    // Appelée par PrincipaleControleur quand on ouvre l'écran, pour voir les logs les plus récents
     public void rafraichir() {
         onFiltrer();
     }
