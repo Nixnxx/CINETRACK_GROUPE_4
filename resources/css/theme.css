@@ -80,18 +80,73 @@
     -fx-background-color: -couleur-accent-survol;
 }
 
+/* Tables : base sombre (remplace les blancs par défaut de Modena) */
+.table-view {
+    -fx-background-color: -couleur-panneau;
+    -fx-control-inner-background: -couleur-panneau;
+    -fx-control-inner-background-alt: #1f2331;
+    -fx-table-cell-border-color: -couleur-bordure;
+    -fx-border-color: -couleur-bordure;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: -couleur-champ;
+}
+
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: -couleur-champ;
+    -fx-border-color: -couleur-bordure;
+    -fx-border-width: 0 1 1 0;
+    -fx-size: 30;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: -couleur-texte;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell {
+    -fx-background-color: -couleur-panneau;
+    -fx-border-color: transparent;
+}
+
+.table-row-cell .table-cell {
+    -fx-text-fill: -couleur-texte;
+    -fx-border-color: transparent;
+}
+
+.table-row-cell:empty {
+    -fx-background-color: -couleur-panneau;
+}
+
 /* Séances : couleur de ligne selon les places restantes */
 .table-row-cell.ligne-places-zero    { -fx-background-color: #3c1414; }
 .table-row-cell.ligne-places-faibles { -fx-background-color: #37280a; }
 
-/* Logs : couleur de ligne selon l'action */
-.table-row-cell.ligne-insert    { -fx-background-color: #f5f5f5; }
-.table-row-cell.ligne-update    { -fx-background-color: #ffffff; }
-.table-row-cell.ligne-delete    { -fx-background-color: #ffffff; }
-.table-row-cell.ligne-connexion { -fx-background-color: #fcfcfc; }
+/* Logs : couleur de ligne selon l'action (mêmes couleurs que les badges) */
+.table-row-cell.ligne-insert {
+    -fx-background-color: #16351f;
+    -fx-border-color: transparent transparent transparent #22783c;
+    -fx-border-width: 0 0 0 3;
+}
+.table-row-cell.ligne-update {
+    -fx-background-color: #172a52;
+    -fx-border-color: transparent transparent transparent #3b82f6;
+    -fx-border-width: 0 0 0 3;
+}
+.table-row-cell.ligne-delete {
+    -fx-background-color: #4a1919;
+    -fx-border-color: transparent transparent transparent #b42828;
+    -fx-border-width: 0 0 0 3;
+}
+.table-row-cell.ligne-connexion {
+    -fx-background-color: -couleur-panneau;
+}
 
 /* La sélection doit toujours rester visible : cette règle doit rester APRÈS les couleurs ci-dessus */
 .table-row-cell:filled:selected { -fx-background-color: #28468c; }
+.table-row-cell:filled:selected .table-cell { -fx-text-fill: white; }
 
 /* Logs : légende en bas de l'écran */
 .badge-log {
