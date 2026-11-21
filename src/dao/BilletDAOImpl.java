@@ -11,15 +11,16 @@ public class BilletDAOImpl implements BilletDAO {
     // Acheter un billet
     @Override
     public boolean acheterBillet(Billet billet) {
-        String sql = "INSERT INTO billet (nom_client, id_seance, id_place, prix) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO billet (id_client, id_seance, id_place, prix, remise) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setString(1, billet.getNom_client());
+            ps.setInt(1, billet.getId_client());
             ps.setInt(2, billet.getId_seance());
             ps.setInt(3, billet.getId_place());
             ps.setDouble(4, billet.getPrix());
+            ps.setBoolean(5, billet.isRemise());
             ps.executeUpdate();
             return true;
 
@@ -43,10 +44,11 @@ public class BilletDAOImpl implements BilletDAO {
                 while (rs.next()) {
                     billets.add(new Billet(
                             rs.getInt("id_billet"),
-                            rs.getString("nom_client"),
+                            rs.getInt("id_client"),
                             rs.getInt("id_seance"),
                             rs.getInt("id_place"),
                             rs.getDouble("prix"),
+                            rs.getBoolean("remise"),
                             rs.getTimestamp("date_achat"),
                             Billet.Statut.fromBdd(rs.getString("statut"))
                     ));

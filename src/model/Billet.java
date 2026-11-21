@@ -29,28 +29,31 @@ public class Billet {
     }
 
     private int id_billet;
-    private String nom_client;
+    private int id_client;
     private int id_seance;
     private int id_place;
-    private double prix;
+    private double prix;          // prix final, remise déjà déduite
+    private boolean remise;       // true si le client a moins de 18 ans
     private Date date_achat;
     private Statut statut;
 
     //CONSTRUCTEUR POUR L'INSERTION
-    public Billet(String nom_client, int id_seance, int id_place, double prix) {
-        this.nom_client = nom_client;
+    public Billet(int id_client, int id_seance, int id_place, double prix, boolean remise) {
+        this.id_client = id_client;
         this.id_seance = id_seance;
         this.id_place = id_place;
         this.prix = prix;
+        this.remise = remise;
         this.statut = Statut.VALIDE;
     }
     //CONSTRUCTEUR UTILE pour SELECT
-    public Billet(int id_billet ,String nom_client,int id_seance,int id_place,double prix ,Date date_achat ,Statut statut) {
+    public Billet(int id_billet, int id_client, int id_seance, int id_place, double prix, boolean remise, Date date_achat, Statut statut) {
         this.id_billet = id_billet;
-        this.nom_client = nom_client;
+        this.id_client = id_client;
         this.id_seance = id_seance;
         this.id_place = id_place;
         this.prix = prix;
+        this.remise = remise;
         this.date_achat = date_achat;
         this.statut = statut;
     }
@@ -63,11 +66,14 @@ public class Billet {
     public int getId_place() {
         return id_place;
     }
-    public String getNom_client() {
-        return nom_client;
+    public int getId_client() {
+        return id_client;
     }
     public double getPrix() {
         return prix;
+    }
+    public boolean isRemise() {
+        return remise;
     }
     public Date getDate_achat() {
         return date_achat;

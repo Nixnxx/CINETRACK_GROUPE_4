@@ -31,6 +31,7 @@ public class PrincipaleControleur {
     @FXML private Button btnBilletterie;
     @FXML private Button btnLogs;
     @FXML private Button btnUtilisateurs;
+    @FXML private Button btnClients;
 
     private String role;
     private Button btnActif = null;
@@ -41,12 +42,14 @@ public class PrincipaleControleur {
     private Pane ecranBilletterie;
     private Pane ecranLogs;           // admin uniquement
     private Pane ecranUtilisateurs;   // admin uniquement
+    private Pane ecranClients;         // admin uniquement
 
     private FilmControleur controleurFilms;
     private SeanceControleur controleurSeances;
     private BilletControleur controleurBilletterie;
     private LogControleur controleurLogs;                    // admin uniquement
     private UtilisateurControleur controleurUtilisateurs;    // admin uniquement
+    private ClientControleur controleurClients;              // admin uniquement
 
     // Appelée automatiquement par JavaFX une fois le FXML chargé
     @FXML
@@ -100,7 +103,11 @@ public class PrincipaleControleur {
             ecranUtilisateurs = chargeur.getRoot();
             controleurUtilisateurs = chargeur.getController();
 
-            zoneCentrale.getChildren().addAll(ecranLogs, ecranUtilisateurs);
+            chargeur = chargerFxml("clients.fxml");
+            ecranClients = chargeur.getRoot();
+            controleurClients = chargeur.getController();
+
+            zoneCentrale.getChildren().addAll(ecranLogs, ecranUtilisateurs, ecranClients);
         }
 
         afficherVue("ACCUEIL");
@@ -157,6 +164,12 @@ public class PrincipaleControleur {
     }
 
     @FXML
+    private void onClients() {
+        afficherVue("CLIENTS");
+        setActif(btnClients);
+    }
+
+    @FXML
     private void onRechercheGenre() {
         afficherVue("FILMS");
         setActif(btnFilms);
@@ -193,6 +206,9 @@ public class PrincipaleControleur {
         if (nomVue.equals("LOGS") && controleurLogs != null) {
             controleurLogs.rafraichir();            // pour voir les logs les plus récents
         }
+        if (nomVue.equals("CLIENTS") && controleurClients != null) {
+            controleurClients.rafraichir();         // achats récents à jour
+        }
         if (nomVue.equals("BILLETTERIE") && controleurBilletterie != null) {
             controleurBilletterie.rafraichir();     // séances à jour à chaque ouverture
         }
@@ -202,6 +218,7 @@ public class PrincipaleControleur {
         montrerEcran(ecranBilletterie, nomVue.equals("BILLETTERIE"));
         montrerEcran(ecranLogs, nomVue.equals("LOGS"));
         montrerEcran(ecranUtilisateurs, nomVue.equals("UTILISATEURS"));
+        montrerEcran(ecranClients, nomVue.equals("CLIENTS"));
     }
 
     private void montrerEcran(Pane ecran, boolean visible) {

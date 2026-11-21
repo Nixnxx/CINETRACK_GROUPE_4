@@ -68,6 +68,7 @@ le contrôleur fx:controller="controller.PrincipaleControleur".
                 <Label styleClass="section-label" text="ADMINISTRATION" />
                 <Button fx:id="btnLogs" maxWidth="Infinity" onAction="#onLogs" styleClass="nav-bouton" text="📋  Logs" />
                 <Button fx:id="btnUtilisateurs" maxWidth="Infinity" onAction="#onUtilisateurs" styleClass="nav-bouton" text="👥  Gestionnaires" />
+                <Button fx:id="btnClients" maxWidth="Infinity" onAction="#onClients" styleClass="nav-bouton" text="🧾  Clients" />
             </VBox>
 
             <!-- Pousse la version tout en bas -->

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+====================================================================
+COUCHE : VIEW (écran Clients décrit en FXML, réservé à l'admin)
+====================================================================
+Aucune logique métier, aucun SQL : tout est délégué au contrôleur
+fx:controller="controller.ClientControleur".
+-->
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ClientControleur">
+
+    <!-- Bandeau du haut : titre avec le nombre de clients -->
+    <top>
+        <HBox alignment="CENTER_LEFT" styleClass="bandeau">
+            <Label fx:id="labelNbClients" styleClass="titre-section" text="Clients" />
+        </HBox>
+    </top>
+
+    <!-- Centre : tableau des clients -->
+    <center>
+        <TableView fx:id="tableClients">
+            <placeholder>
+                <Label text="Aucun client" />
+            </placeholder>
+            <columns>
+                <TableColumn fx:id="colNom" prefWidth="260.0" text="Nom" />
+                <TableColumn fx:id="colNaissance" prefWidth="140.0" text="Date de naissance" />
+                <TableColumn fx:id="colNbBillets" prefWidth="130.0" style="-fx-alignment: CENTER-RIGHT;" text="Billets achetés" />
+                <TableColumn fx:id="colTotal" prefWidth="130.0" style="-fx-alignment: CENTER-RIGHT;" text="Total payé" />
+            </columns>
+        </TableView>
+    </center>
+
+    <!-- Bas : rafraîchir -->
+    <bottom>
+        <HBox alignment="CENTER_LEFT" spacing="8.0" styleClass="barre-boutons">
+            <Button onAction="#onRafraichir" styleClass="bouton-gris" text="↺ Rafraîchir" />
+        </HBox>
+    </bottom>
+
+</BorderPane>

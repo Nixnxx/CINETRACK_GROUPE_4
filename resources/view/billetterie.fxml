@@ -8,6 +8,7 @@ Aucune logique métier, aucun SQL : tout est délégué au contrôleur
 fx:controller="controller.BilletControleur".
 La grille des places (grillePlaces) est remplie par le contrôleur,
 car le nombre de places dépend de la salle choisie.
+La remise (-20 % si moins de 18 ans) est calculée par BilletService.
 -->
 
 <?import javafx.geometry.Insets?>
@@ -64,9 +65,16 @@ car le nombre de places dépend de la salle choisie.
 
             <Label fx:id="labelRecap" styleClass="libelle" text="" />
 
+            <!-- Ligne 1 : nom du client -->
             <HBox alignment="CENTER_LEFT" spacing="10.0">
-                <Label styleClass="libelle" text="Nom du client :" />
+                <Label minWidth="120.0" styleClass="libelle" text="Nom du client :" />
                 <TextField fx:id="champNom" prefColumnCount="18" />
+            </HBox>
+
+            <!-- Ligne 2 : date de naissance (sert à calculer la remise) et bouton d'achat -->
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                <Label minWidth="120.0" styleClass="libelle" text="Date de naissance :" />
+                <DatePicker fx:id="champDateNaissance" prefWidth="150.0" promptText="jj/mm/aaaa" />
                 <Button fx:id="btnAcheter" disable="true" onAction="#onAcheter" styleClass="bouton-vert" text="Acheter" />
             </HBox>
         </VBox>

@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -16,6 +17,7 @@ import model.Place;
 import model.Seance;
 import service.BilletService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +42,7 @@ public class BilletControleur {
     @FXML private Label labelRecap;
     @FXML private GridPane grillePlaces;
     @FXML private TextField champNom;
+    @FXML private DatePicker champDateNaissance;
     @FXML private Button btnAcheter;
 
     private final BilletService service = new BilletService();
@@ -63,6 +66,9 @@ public class BilletControleur {
                 new SimpleStringProperty(String.format("%.2f", ligne.getValue().getPrix())));
         tableSeances.setItems(donnees);
 
+        // Quand on choisit la date de naissance, le récapitulatif affiche le prix avec la remise
+        champDateNaissance.valueProperty().addListener((obs, ancien, nouveau) -> majRecap());
+
         // Quand on choisit une séance, on affiche sa grille de places
         tableSeances.getSelectionModel().selectedItemProperty().addListener(
                 (obs, ancien, nouveau) -> choisirSeance(nouveau));
@@ -79,7 +85,7 @@ public class BilletControleur {
             return;
         }
 
-        acheterBillets(champNom.getText(), seanceChoisie.getIdSeance(),
+        acheterBillets(champNom.getText(), champDateNaissance.getValue(), seanceChoisie.getIdSeance(),
                 seanceChoisie.getPrix(), new ArrayList<>(placesChoisies));
 
         // Recharge la liste puis réaffiche la même séance, avec les places à jour
@@ -123,12 +129,13 @@ public class BilletControleur {
     }
 
     // Achète une place après l'autre, et s'arrête à la première erreur
-    private void acheterBillets(String nomClient, int idSeance, double prix, List<Place> places) {
+    // prix = prix de base de la séance : la remise est calculée par le service
+    private void acheterBillets(String nomClient, LocalDate dateNaissance, int idSeance, double prix, List<Place> places) {
         int reussis = 0;
         String erreur = null;
 
         for (Place p : places) {
-            String resultat = service.acheterBillet(nomClient, idSeance, p.getId_place(), prix);
+            String resultat = service.acheterBillet(nomClient, dateNaissance, idSeance, p.getId_place(), prix);
             if (resultat.equals("OK")) {
                 reussis++;
             } else {
@@ -140,6 +147,7 @@ public class BilletControleur {
         if (erreur == null) {
             DialogueMessageControleur.info(fenetre(), "Succès", reussis + " billet(s) acheté(s) !");
             champNom.clear();
+            champDateNaissance.setValue(null);
         } else {
             DialogueMessageControleur.erreur(fenetre(), reussis + " billet(s) acheté(s), puis : " + erreur);
         }
@@ -189,9 +197,19 @@ public class BilletControleur {
             }
             noms.append(p.getRangee()).append(p.getNumero());
         }
-        double total = placesChoisies.size() * seanceChoisie.getPrix();
+        // Prix d'une place : avec la remise si la date de naissance est saisie et valide
+        double prixPlace = seanceChoisie.getPrix();
+        String infoRemise = "";
+        LocalDate naissance = champDateNaissance.getValue();
+        if (naissance != null && !naissance.isAfter(LocalDate.now())) {
+            prixPlace = service.prixFinal(seanceChoisie.getPrix(), naissance);
+            if (service.aDroitRemise(naissance)) {
+                infoRemise = "  (remise de 20 % incluse)";
+            }
+        }
+        double total = placesChoisies.size() * prixPlace;
         labelRecap.setText(placesChoisies.size() + " place(s) : " + noms
-                + "   —   Total : " + String.format("%.2f", total));
+                + "   —   Total : " + String.format("%.2f", total) + infoRemise);
         btnAcheter.setDisable(false);
     }
 
