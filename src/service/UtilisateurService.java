@@ -11,6 +11,10 @@ import java.util.List;
 
 public class UtilisateurService {
 
+    // Anti force brute : 5 mots de passe faux de suite => compte bloqué 15 minutes
+    private static final int MAX_TENTATIVES = 5;
+    private static final int DUREE_BLOCAGE_MINUTES = 15;
+
     // Utilisateur actuellement connecté (session de l'application).
     // static : partagé par toutes les instances du service.
     private static Utilisateur utilisateurCourant;
@@ -31,10 +35,29 @@ public class UtilisateurService {
         if (login == null || login.isBlank() || motDePasse == null || motDePasse.isEmpty()) {
             return "Identifiant et mot de passe requis.";
         }
-        Utilisateur utilisateur = utilisateurDao.authentifier(login.trim(), motDePasse);
+        String loginNettoye = login.trim();
+
+        // 1) Compte bloqué ? On refuse même si le mot de passe est correct.
+        int minutes = utilisateurDao.minutesRestantesBlocage(loginNettoye);
+        if (minutes > 0) {
+            return "Compte bloqué suite à trop de tentatives. Réessayez dans "
+                    + minutes + " minute(s).";
+        }
+
+        // 2) Vérification du mot de passe
+        Utilisateur utilisateur = utilisateurDao.authentifier(loginNettoye, motDePasse);
         if (utilisateur == null) {
+            int echecs = utilisateurDao.enregistrerEchec(loginNettoye);
+            if (echecs >= MAX_TENTATIVES) {
+                utilisateurDao.bloquer(loginNettoye, DUREE_BLOCAGE_MINUTES);
+                return "Trop de tentatives : compte bloqué pendant "
+                        + DUREE_BLOCAGE_MINUTES + " minutes.";
+            }
             return "Identifiant ou mot de passe incorrect.";
         }
+
+        // 3) Connexion réussie : le compteur d'échecs repart à 0
+        utilisateurDao.reinitialiserTentatives(utilisateur.getLogin());
         utilisateurCourant = utilisateur;
         LogDAO.setRoleActuel(utilisateur.getRole());   // le rôle doit être défini avant le log
         logDao.logConnexion(utilisateur.getLogin());

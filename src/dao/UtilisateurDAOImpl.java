@@ -105,4 +105,69 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
             return stmt.executeUpdate() == 1;
         }
     }
+
+    // =========================================================
+    //  Anti force brute
+    //  Les dates sont calculées par PostgreSQL (NOW()) pour éviter
+    //  tout décalage d'heure entre l'application et la base.
+    // =========================================================
+
+    /** Minutes restantes avant la fin du blocage, 0 si le compte n'est pas bloqué. */
+    @Override
+    public int minutesRestantesBlocage(String login) throws SQLException {
+        String sql = "SELECT CEIL(EXTRACT(EPOCH FROM (bloque_jusqua - NOW())) / 60.0) "
+                   + "FROM utilisateur "
+                   + "WHERE LOWER(login) = LOWER(?) AND bloque_jusqua > NOW()";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, login);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next() ? rs.getInt(1) : 0;
+            }
+        }
+    }
+
+    /** Ajoute 1 au nombre d'échecs et retourne le nouveau total (0 si le login n'existe pas). */
+    @Override
+    public int enregistrerEchec(String login) throws SQLException {
+        String sql = "UPDATE utilisateur SET tentatives_echec = tentatives_echec + 1 "
+                   + "WHERE LOWER(login) = LOWER(?) RETURNING tentatives_echec";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, login);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next() ? rs.getInt(1) : 0;
+            }
+        }
+    }
+
+    /** Bloque le compte pendant "minutes" minutes ; le compteur d'échecs repart à 0. */
+    @Override
+    public void bloquer(String login, int minutes) throws SQLException {
+        String sql = "UPDATE utilisateur "
+                   + "SET bloque_jusqua = NOW() + (? * INTERVAL '1 minute'), tentatives_echec = 0 "
+                   + "WHERE LOWER(login) = LOWER(?)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, minutes);
+            stmt.setString(2, login);
+            stmt.executeUpdate();
+        }
+    }
+
+    /** Après une connexion réussie : compteur à 0 et plus de blocage. */
+    @Override
+    public void reinitialiserTentatives(String login) throws SQLException {
+        String sql = "UPDATE utilisateur SET tentatives_echec = 0, bloque_jusqua = NULL "
+                   + "WHERE LOWER(login) = LOWER(?)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, login);
+            stmt.executeUpdate();
+        }
+    }
 }
